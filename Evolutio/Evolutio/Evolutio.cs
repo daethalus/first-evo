@@ -74,9 +74,9 @@ namespace Evolutio
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
 
-            for (var x = player.PlayerPosition.X - 10; x < player.PlayerPosition.X + 20; x++)
+            for (var x = (int) player.PlayerPosition.X - 10; x < (int) player.PlayerPosition.X + 22; x++)
             {
-                for (var y = player.PlayerPosition.Y - 10; y < player.PlayerPosition.Y + 10; y++)
+                for (var y = (int) player.PlayerPosition.Y - 10; y < (int) player.PlayerPosition.Y + 10; y++)
                 { 
                     //Log.Debug(x + " - " + y);
                     Tile tile;
@@ -84,7 +84,7 @@ namespace Evolutio
                     var ax = x - player.PlayerPosition.X + 10;
                     var ay = y - player.PlayerPosition.Y + 10;
 
-                    Vector2 position = new Vector2(ax * (16 * SCALE), ay * (16 * SCALE));
+                    var position = new Vector2(ax * (16 * SCALE), ay * (16 * SCALE));
                     
                     //Log.Debug("position {position} ", position);
                     

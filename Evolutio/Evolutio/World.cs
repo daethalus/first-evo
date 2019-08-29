@@ -14,7 +14,7 @@ namespace Evolutio
                 for (var j = 0; j < 100; j++)
                 {
                     var item = "ground";
-                    if (j % 2 == 0)
+                    if (j % 2 == 0 && i % 3 == 0)
                     {
                         item = "water";
                     }
