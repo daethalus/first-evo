@@ -36,6 +36,7 @@ namespace Evolutio
         protected override void Initialize()
         {
             Log.Debug("Initialize");
+            IsMouseVisible = true;
             base.Initialize();
         }
         
