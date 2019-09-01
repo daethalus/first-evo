@@ -28,6 +28,8 @@ namespace Evolutio
         public const float SCALE = 4f;
 
         private KeyboardState oldState;
+        
+        private SpriteFont font;
 
         public Evolutio()
         {
@@ -36,7 +38,7 @@ namespace Evolutio
             Window.AllowUserResizing = true;
             FormControl.Maximize(Window);
             
-            player = new Player();
+            player = new Player{World = World};
             behaviors.Add(player);
             gen = new GenerationParams(World, this);
         }
@@ -52,6 +54,7 @@ namespace Evolutio
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Log.Debug("LoadContent");
             overworld = Content.Load<Texture2D>("Overworld");
+            font = Content.Load<SpriteFont>("Font");
             foreach (var behavior in behaviors)
             {
                 behavior.LoadContent(Content);
@@ -108,24 +111,30 @@ namespace Evolutio
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             
-            for (var x = (int) player.PlayerPosition.X - 11; x < (int) player.PlayerPosition.X + 22; x++)
+            for (var x = (int) player.PlayerPosition.X - 16; x < (int) player.PlayerPosition.X + 17; x++)
             {
-                for (var y = (int) player.PlayerPosition.Y - 11; y < (int) player.PlayerPosition.Y + 10; y++)
+                for (var y = (int) player.PlayerPosition.Y - 10; y < (int) player.PlayerPosition.Y + 10; y++)
                 { 
                     //Log.Debug(x + " - " + y);
 
                     var tile = World.GetTile(new Vector3(x, y, 0));
                     if (tile == null) continue;
-                    
-                    var ax = x - player.PlayerPosition.X + 10;
-                    var ay = y - player.PlayerPosition.Y + 10;
+
+                    var color = Color.White;
+                    if (player.GetPlayerPositionInt().Equals(tile.Position))
+                    {
+                        color = Color.Red;
+                    }
+
+                    var ax = x - player.PlayerPosition.X + 14;
+                    var ay = y - player.PlayerPosition.Y + 9;
 
                     var position = new Vector2(ax * (16 * SCALE), ay * (16 * SCALE));
 
                     spriteBatch.Draw(overworld, 
                         position,
                         tile.Ground.SourceRectangle,
-                        Color.White,
+                        color,
                         0f, new Vector2(0, 0),
                         SCALE,
                         SpriteEffects.None,
@@ -137,6 +146,8 @@ namespace Evolutio
             {
                 behavior.Draw(spriteBatch, gameTime);
             }
+
+            spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
 
             if (showMap && textureMap != null)
             {

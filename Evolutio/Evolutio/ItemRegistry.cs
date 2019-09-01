@@ -10,9 +10,9 @@ namespace Evolutio
         public ItemRegistry()
         {
             Items = new Dictionary<string, Item>();
-            addItem(new Item {Name = "ground",SourceRectangle = new Rectangle(0,0,16,16)});
-            addItem(new Item {Name = "water",SourceRectangle = new Rectangle(0,16,16,16)});
-            addItem(new Item {Name = "other",SourceRectangle = new Rectangle(16,0,16,16)});
+            addItem(new Item {Name = "ground",SourceRectangle = new Rectangle(0,0,16,16), CanWalk = true});
+            addItem(new Item {Name = "water",SourceRectangle = new Rectangle(0,16,16,16), CanWalk = false});
+            addItem(new Item {Name = "other",SourceRectangle = new Rectangle(16,0,16,16), CanWalk = true});
         }
 
         public void addItem(Item item)

@@ -9,9 +9,12 @@ namespace Evolutio
 {
     public class Player : ClientBehavior
     {
+        public World World { get; set; }
+
         class Direction
         {
             public Rectangle Rectangle;
+
             private Direction(Rectangle rectangle)
             {
                 Rectangle = rectangle;
@@ -22,8 +25,8 @@ namespace Evolutio
             public static Direction NORTH = new Direction(new Rectangle(0, 64, 16, 32));
             public static Direction WEST = new Direction(new Rectangle(0, 96, 16, 32));
         }
-        
-        public Vector3 PlayerPosition = new Vector3(0,0, 0);
+
+        public Vector3 PlayerPosition = new Vector3(0, 0, 0);
         private Texture2D characterSprite;
         private Direction _direction = Direction.SOUTH;
 
@@ -37,41 +40,69 @@ namespace Evolutio
 
         public void Update(GameTime gameTime)
         {
-
             speed = 0.1f;
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
                 speed = 1f;
             }
-            
+
+            bool moved = false;
+
+            var newPlayerPosition = PlayerPosition;
+
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                PlayerPosition += new Vector3(0, speed, 0);
+                newPlayerPosition += new Vector3(0, speed, 0);
                 _direction = Direction.SOUTH;
+                moved = true;
             }
-            
+
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                PlayerPosition -= new Vector3(0, speed, 0);
+                newPlayerPosition -= new Vector3(0, speed, 0);
                 _direction = Direction.NORTH;
+                moved = true;
             }
-            
-            if (Keyboard.GetState().IsKeyDown(Keys.A))    
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                PlayerPosition -= new Vector3(speed, 0, 0);
+                newPlayerPosition -= new Vector3(speed, 0, 0);
                 _direction = Direction.WEST;
+                moved = true;
             }
-            
+
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                PlayerPosition += new Vector3(speed, 0, 0);
+                newPlayerPosition += new Vector3(speed, 0, 0);
                 _direction = Direction.EAST;
+                moved = true;
             }
+            
+          //  PlayerPosition = newPlayerPosition;
+            
+            if (moved)
+            {
+                var tile = World.GetTile(new Vector3((int) newPlayerPosition.X, (int) newPlayerPosition.Y, (int) newPlayerPosition.Z));
+                if (tile != null)
+                {
+                    if (tile.Ground.CanWalk)
+                    {
+                        PlayerPosition = newPlayerPosition;
+                    }
+                }
+            }
+        }
+
+        public Vector3 GetPlayerPositionInt()
+        {
+            return new Vector3((int) PlayerPosition.X, (int) PlayerPosition.Y, (int) PlayerPosition.Z);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(characterSprite, new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 16, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 32),
+            spriteBatch.Draw(characterSprite,
+                new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 16,
+                    GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 32),
                 _direction.Rectangle,
                 Color.White,
                 0f, new Vector2(0, 0),

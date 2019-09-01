@@ -8,5 +8,7 @@ namespace Evolutio
         public string Name { get; set; }
 
         public Rectangle SourceRectangle { get; set; }
+
+        public bool CanWalk { get; set; }
     }
 }
