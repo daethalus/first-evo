@@ -23,7 +23,7 @@ namespace Evolutio
             public static Direction WEST = new Direction(new Rectangle(0, 96, 16, 32));
         }
         
-        public Vector3 PlayerPosition = new Vector3(30,30, 0);
+        public Vector3 PlayerPosition = new Vector3(0,0, 0);
         private Texture2D characterSprite;
         private Direction _direction = Direction.SOUTH;
 
@@ -37,6 +37,13 @@ namespace Evolutio
 
         public void Update(GameTime gameTime)
         {
+
+            speed = 0.1f;
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+            {
+                speed = 1f;
+            }
+            
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 PlayerPosition += new Vector3(0, speed, 0);
@@ -49,7 +56,7 @@ namespace Evolutio
                 _direction = Direction.NORTH;
             }
             
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            if (Keyboard.GetState().IsKeyDown(Keys.A))    
             {
                 PlayerPosition -= new Vector3(speed, 0, 0);
                 _direction = Direction.WEST;

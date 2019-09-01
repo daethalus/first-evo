@@ -12,6 +12,7 @@ namespace Evolutio
             Items = new Dictionary<string, Item>();
             addItem(new Item {Name = "ground",SourceRectangle = new Rectangle(0,0,16,16)});
             addItem(new Item {Name = "water",SourceRectangle = new Rectangle(0,16,16,16)});
+            addItem(new Item {Name = "other",SourceRectangle = new Rectangle(16,0,16,16)});
         }
 
         public void addItem(Item item)

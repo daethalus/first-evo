@@ -11,17 +11,23 @@ namespace Evolutio
    
     public class Evolutio : Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static readonly ItemRegistry ItemRegistry = new ItemRegistry();
         public static World World = new World();
         private Player player;
         private readonly List<ClientBehavior> behaviors = new List<ClientBehavior>();
 
+        public Texture2D textureMap;
+        private bool showMap = false;
+
         private Texture2D overworld;
 
+        private GenerationParams gen;
 
         public const float SCALE = 4f;
+
+        private KeyboardState oldState;
 
         public Evolutio()
         {
@@ -32,6 +38,7 @@ namespace Evolutio
             
             player = new Player();
             behaviors.Add(player);
+            gen = new GenerationParams(World, this);
         }
         protected override void Initialize()
         {
@@ -58,13 +65,40 @@ namespace Evolutio
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            KeyboardState newState = Keyboard.GetState();
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && showMap)
+            {
+                showMap = false;
+            } else if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                //  Exit();
+            }
+
+            if (oldState.IsKeyUp(Keys.G) && newState.IsKeyDown(Keys.G))
+            {
+                World.GenerateMap();
+                textureMap = World.GenerateImageFromMap(graphics.GraphicsDevice);
+            }
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+            {
+                showMap = true;
+                textureMap = World.GenerateImageFromMap(graphics.GraphicsDevice);
+            }
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.C))
+            {
+                gen.Show();
+            }
+
 
             foreach (var behavior in behaviors)
             {
                 behavior.Update(gameTime);
             }
+
+            oldState = newState;
             
             base.Update(gameTime);
         }
@@ -104,6 +138,19 @@ namespace Evolutio
             foreach (var behavior in behaviors)
             {
                 behavior.Draw(spriteBatch, gameTime);
+            }
+
+            if (showMap && textureMap != null)
+            {
+                spriteBatch.Draw(textureMap, 
+                    new Vector2(500,100),
+                    new Rectangle(0,0,160,160),
+                    Color.White,
+                    0f, 
+                    new Vector2(0, 0),
+                    5,
+                    SpriteEffects.None,
+                    0f);
             }
             spriteBatch.End();
             base.Draw(gameTime);

@@ -46,6 +46,12 @@
     <Compile Include="Evolutio\Client\ClientBehavior.cs" />
     <Compile Include="Evolutio\Client\FormControl.cs" />
     <Compile Include="Evolutio\Evolutio.cs" />
+    <Compile Include="Evolutio\GenerationParams.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Evolutio\GenerationParams.Designer.cs">
+      <DependentUpon>GenerationParams.cs</DependentUpon>
+    </Compile>
     <Compile Include="Evolutio\Item.cs" />
     <Compile Include="Evolutio\ItemRegistry.cs" />
     <Compile Include="Evolutio\Player.cs" />
@@ -77,6 +83,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -87,6 +94,11 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Evolutio\GenerationParams.resx">
+      <DependentUpon>GenerationParams.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
