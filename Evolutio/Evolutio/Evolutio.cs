@@ -107,34 +107,32 @@ namespace Evolutio
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-
-            for (var x = (int) player.PlayerPosition.X - 10; x < (int) player.PlayerPosition.X + 22; x++)
+            
+            for (var x = (int) player.PlayerPosition.X - 11; x < (int) player.PlayerPosition.X + 22; x++)
             {
-                for (var y = (int) player.PlayerPosition.Y - 10; y < (int) player.PlayerPosition.Y + 10; y++)
+                for (var y = (int) player.PlayerPosition.Y - 11; y < (int) player.PlayerPosition.Y + 10; y++)
                 { 
                     //Log.Debug(x + " - " + y);
-                    Tile tile;
-                    if (!World.Tiles.TryGetValue(new Vector3(x, y, 0), out tile)) continue;
+
+                    var tile = World.GetTile(new Vector3(x, y, 0));
+                    if (tile == null) continue;
+                    
                     var ax = x - player.PlayerPosition.X + 10;
                     var ay = y - player.PlayerPosition.Y + 10;
 
                     var position = new Vector2(ax * (16 * SCALE), ay * (16 * SCALE));
-                    
-                    //Log.Debug("position {position} ", position);
-                    
-                        spriteBatch.Draw(overworld, 
-                            position,
-                            tile.Ground.SourceRectangle,
-                            Color.White,
-                            0f, new Vector2(0, 0),
-                            SCALE,
-                            SpriteEffects.None,
-                            0f);
 
+                    spriteBatch.Draw(overworld, 
+                        position,
+                        tile.Ground.SourceRectangle,
+                        Color.White,
+                        0f, new Vector2(0, 0),
+                        SCALE,
+                        SpriteEffects.None,
+                        0f);
                 }
-
             }
+            
             foreach (var behavior in behaviors)
             {
                 behavior.Draw(spriteBatch, gameTime);
