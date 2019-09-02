@@ -1,3 +1,4 @@
+using System;
 using Evolutio.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -78,31 +79,43 @@ namespace Evolutio
                 moved = true;
             }
             
-          //  PlayerPosition = newPlayerPosition;
+            PlayerPosition = newPlayerPosition;
             
-            if (moved)
-            {
-                var tile = World.GetTile(new Vector3((int) newPlayerPosition.X, (int) newPlayerPosition.Y, (int) newPlayerPosition.Z));
-                if (tile != null)
-                {
-                    if (tile.Ground.CanWalk)
-                    {
-                        PlayerPosition = newPlayerPosition;
-                    }
-                }
-            }
+//            if (moved)
+//            {
+//                var tile = World.GetTile(new Vector3((int) newPlayerPosition.X, (int) newPlayerPosition.Y, (int) newPlayerPosition.Z));
+//                if (tile != null)
+//                {
+//                    if (tile.Ground.CanWalk)
+//                    {
+//                        PlayerPosition = newPlayerPosition;
+//                    }
+//                }
+//            }
         }
 
         public Vector3 GetPlayerPositionInt()
         {
             return new Vector3((int) PlayerPosition.X, (int) PlayerPosition.Y, (int) PlayerPosition.Z);
         }
+        
+        public Vector3 GetPlayerPositionIntFloor()
+        {
+            return new Vector3((int) Math.Floor(PlayerPosition.X),  (int) Math.Floor(PlayerPosition.Y), (int) Math.Floor(PlayerPosition.Z));
+        }
+
+
+
+        public static Vector2 GetPlayerPositionInScreen()
+        {
+            return new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 16 * Evolutio.SCALE,
+                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 32 * Evolutio.SCALE);
+        }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(characterSprite,
-                new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 16,
-                    GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 32),
+                GetPlayerPositionInScreen(),
                 _direction.Rectangle,
                 Color.White,
                 0f, new Vector2(0, 0),

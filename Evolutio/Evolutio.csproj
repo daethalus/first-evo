@@ -46,6 +46,7 @@
     <Compile Include="Evolutio\Chunk.cs" />
     <Compile Include="Evolutio\Client\ClientBehavior.cs" />
     <Compile Include="Evolutio\Client\FormControl.cs" />
+    <Compile Include="Evolutio\Client\MapRenderer.cs" />
     <Compile Include="Evolutio\Evolutio.cs" />
     <Compile Include="Evolutio\GenerationParams.cs">
       <SubType>Form</SubType>

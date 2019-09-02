@@ -23,6 +23,7 @@ namespace Evolutio
         public double UpperBound = 15;
 
         private int _seed;
+        private Random _random;
         
         private Perlin _perlin;
         private ScaleBias _scaleBias;
@@ -34,6 +35,8 @@ namespace Evolutio
         public World()
         {
             _seed = new Random().Next();
+            _random = new Random(_seed);
+            
             _perlin = new Perlin
             {
                 Seed = _seed,
@@ -94,7 +97,7 @@ namespace Evolutio
             {
                 ChunkPosition = chunkPosition
             };
-            chunk.GenerateChunk(_builder);
+            chunk.GenerateChunk(_builder, _random);
             ChunkMap.Add(chunkPosition, chunk);
             return chunk;
         }

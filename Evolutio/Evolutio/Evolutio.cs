@@ -21,13 +21,13 @@ namespace Evolutio
         public Texture2D textureMap;
         private bool showMap = false;
 
-        private Texture2D overworld;
-
         private GenerationParams gen;
 
         public const float SCALE = 4f;
 
         private KeyboardState oldState;
+
+        private MouseState _mouseState;
         
         private SpriteFont font;
 
@@ -39,7 +39,9 @@ namespace Evolutio
             FormControl.Maximize(Window);
             
             player = new Player{World = World};
+            behaviors.Add(new MapRenderer{World = World, Player = player});
             behaviors.Add(player);
+            
             gen = new GenerationParams(World, this);
         }
         protected override void Initialize()
@@ -53,7 +55,7 @@ namespace Evolutio
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Log.Debug("LoadContent");
-            overworld = Content.Load<Texture2D>("Overworld");
+            
             font = Content.Load<SpriteFont>("Font");
             foreach (var behavior in behaviors)
             {
@@ -69,7 +71,7 @@ namespace Evolutio
         protected override void Update(GameTime gameTime)
         {
             KeyboardState newState = Keyboard.GetState();
-            
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape) && showMap)
             {
                 showMap = false;
@@ -102,6 +104,7 @@ namespace Evolutio
             }
 
             oldState = newState;
+            _mouseState = Mouse.GetState();
             
             base.Update(gameTime);
         }
@@ -110,44 +113,15 @@ namespace Evolutio
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            
-            for (var x = (int) player.PlayerPosition.X - 16; x < (int) player.PlayerPosition.X + 17; x++)
-            {
-                for (var y = (int) player.PlayerPosition.Y - 10; y < (int) player.PlayerPosition.Y + 10; y++)
-                { 
-                    //Log.Debug(x + " - " + y);
 
-                    var tile = World.GetTile(new Vector3(x, y, 0));
-                    if (tile == null) continue;
-
-                    var color = Color.White;
-                    if (player.GetPlayerPositionInt().Equals(tile.Position))
-                    {
-                        color = Color.Red;
-                    }
-
-                    var ax = x - player.PlayerPosition.X + 14;
-                    var ay = y - player.PlayerPosition.Y + 9;
-
-                    var position = new Vector2(ax * (16 * SCALE), ay * (16 * SCALE));
-
-                    spriteBatch.Draw(overworld, 
-                        position,
-                        tile.Ground.SourceRectangle,
-                        color,
-                        0f, new Vector2(0, 0),
-                        SCALE,
-                        SpriteEffects.None,
-                        0f);
-                }
-            }
-            
             foreach (var behavior in behaviors)
             {
                 behavior.Draw(spriteBatch, gameTime);
             }
 
             spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
+            spriteBatch.DrawString(font, string.Format("Real player position : {0}", player.GetPlayerPositionInt()), new Vector2(10,40), Color.White);
+            spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,60), Color.White);
 
             if (showMap && textureMap != null)
             {

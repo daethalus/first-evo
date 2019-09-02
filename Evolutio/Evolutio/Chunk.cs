@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using SharpNoise.Builders;
@@ -12,7 +13,7 @@ namespace Evolutio
         
         public Dictionary<Vector3, Tile> TileMap = new Dictionary<Vector3, Tile>();
 
-        public void GenerateChunk(PlaneNoiseMapBuilder mapBuilder)
+        public void GenerateChunk(PlaneNoiseMapBuilder mapBuilder, Random random)
         {
             mapBuilder.SetBounds(
                 ChunkPosition.X * 16, 
@@ -31,10 +32,31 @@ namespace Evolutio
                     double value = mapBuilder.DestNoiseMap.GetValue(x, y);
 
                     var item = "ground";
+                    List<Item> Items = new List<Item>();
 
                     if (value < 0)
                     {
-                        item = "water";
+                        if (random.Next(30) == 0)
+                        {
+                            item = "wave";
+                        }
+                        else
+                        {
+                            item = "water";
+                        }
+                    }
+                    else
+                    {
+                        int rand = random.Next(60); 
+                        if ( rand == 0)
+                        {
+                            Items.Add(Evolutio.ItemRegistry.findItem("bush"));
+                        }
+                        
+                        if (rand == 1)
+                        {
+                            Items.Add(Evolutio.ItemRegistry.findItem("stone"));
+                        }
                     }
 
                     if (x == 15 || y == 15)
@@ -46,6 +68,7 @@ namespace Evolutio
                     {
                         Ground = Evolutio.ItemRegistry.findItem(item),
                         Position = new Vector3(ChunkPosition.X * 16 + x, ChunkPosition.Y * 16 + y, 0),
+                        Items = Items
                     });
                 }
             }
