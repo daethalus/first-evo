@@ -21,6 +21,12 @@ namespace Evolutio
                 Rectangle = rectangle;
             }
 
+//            public static Direction SOUTH = new Direction(new Rectangle(0, 0, 16, 32));
+//            public static Direction EAST = new Direction(new Rectangle(0, 32, 16, 32));
+//            public static Direction NORTH = new Direction(new Rectangle(0, 64, 16, 32));
+//            public static Direction WEST = new Direction(new Rectangle(0, 96, 16, 32));
+
+
             public static Direction SOUTH = new Direction(new Rectangle(0, 0, 16, 32));
             public static Direction EAST = new Direction(new Rectangle(0, 32, 16, 32));
             public static Direction NORTH = new Direction(new Rectangle(0, 64, 16, 32));
@@ -79,19 +85,33 @@ namespace Evolutio
                 moved = true;
             }
             
-            PlayerPosition = newPlayerPosition;
+           // PlayerPosition = newPlayerPosition;
             
-//            if (moved)
-//            {
-//                var tile = World.GetTile(new Vector3((int) newPlayerPosition.X, (int) newPlayerPosition.Y, (int) newPlayerPosition.Z));
-//                if (tile != null)
-//                {
-//                    if (tile.Ground.CanWalk)
-//                    {
-//                        PlayerPosition = newPlayerPosition;
-//                    }
-//                }
-//            }
+            if (moved)
+            {
+                var tile = World.GetTile(new Vector3((int) Math.Floor(newPlayerPosition.X), (int) Math.Floor(newPlayerPosition.Y), (int) newPlayerPosition.Z));
+                if (tile != null)
+                {
+                    bool canWalk = true;
+                    foreach (var item in tile.Items)
+                    {
+                        if (!item.CanWalk)
+                        {
+                            canWalk = false;
+                            break;
+                        }
+                    }
+                    if (!tile.Ground.CanWalk)
+                    {
+                        canWalk = false;
+                    }
+
+                    if (canWalk)
+                    {
+                        PlayerPosition = newPlayerPosition;
+                    }
+                }
+            }
         }
 
         public Vector3 GetPlayerPositionInt()
@@ -108,8 +128,8 @@ namespace Evolutio
 
         public static Vector2 GetPlayerPositionInScreen()
         {
-            return new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 16 * Evolutio.SCALE,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 32 * Evolutio.SCALE);
+            return new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 94,
+                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 186);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

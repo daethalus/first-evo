@@ -30,8 +30,8 @@ namespace Evolutio
             addItem(wave);
             
             addItem(new Item {Name = "other",SourceRectangle = new Rectangle(16,0,16,16), CanWalk = true});
-            addItem(new Item {Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = true});
-            addItem(new Item {Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = true});
+            addItem(new Item {Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = false});
+            addItem(new Item {Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = false});
         }
 
         public void addItem(Item item)
@@ -42,6 +42,14 @@ namespace Evolutio
         public Item findItem(string name)
         {
             return Items[name];
+        }
+
+        public void Animate(GameTime time)
+        {
+            foreach (var item in Items.Values)
+            {
+                item.Animate(time);
+            }
         }
     }
 }

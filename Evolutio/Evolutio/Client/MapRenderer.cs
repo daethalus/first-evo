@@ -22,7 +22,7 @@ namespace Evolutio.Client
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var PlayerPosition = Player.GetPlayerPositionInt();
+            var PlayerPosition = Player.GetPlayerPositionIntFloor();
             
             for (var x = PlayerPosition.X - 16; x < PlayerPosition.X + 17; x++)
             {
@@ -32,10 +32,10 @@ namespace Evolutio.Client
                     if (tile == null) continue;
 
                     var color = Color.White;
-                    if (Player.GetPlayerPositionInt().Equals(tile.Position))
-                    {
-                       // color = Color.Red;
-                    }
+//                    if (Player.GetPlayerPositionIntFloor().Equals(tile.Position))
+//                    {
+//                        color = Color.Red;
+//                    }
 
 //                    var ax = x - Player.PlayerPosition.X + 15;
 //                    var ay = y - Player.PlayerPosition.Y + 7;
@@ -49,7 +49,7 @@ namespace Evolutio.Client
                     
                     spriteBatch.Draw(_overworld, 
                         position,
-                        tile.Ground.GetSourceRectangle(gameTime, tile.Position),
+                        tile.Ground.GetSourceRectangle(tile.Position),
                         color,
                         0f, new Vector2(0, 0),
                         Evolutio.SCALE,
@@ -60,7 +60,7 @@ namespace Evolutio.Client
                     {
                         spriteBatch.Draw(_overworld, 
                             position,
-                            item.GetSourceRectangle(gameTime, tile.Position),
+                            item.GetSourceRectangle(tile.Position),
                             color,
                             0f, new Vector2(0, 0),
                             Evolutio.SCALE,

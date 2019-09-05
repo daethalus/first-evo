@@ -22,17 +22,12 @@ namespace Evolutio
             SourceRectangles.Add(rectangle);
             return this;
         }
-
-        public Rectangle GetSourceRectangle(GameTime time, Vector3 position)
+        
+        public void Animate(GameTime time)
         {
-            if (SourceRectangles.Count == 0)
-            {
-                return SourceRectangle;
-            }
-
             if (AnimationTime > 0)
             {
-                if ((int) time.TotalGameTime.TotalMilliseconds % AnimationTime == 0)
+                if (time.TotalGameTime.Milliseconds % AnimationTime == 0)
                 {
                     spriteIndex++;
                     if (spriteIndex >= SourceRectangles.Count)
@@ -40,6 +35,15 @@ namespace Evolutio
                         spriteIndex = 0;
                     }
                 }
+            }
+        }
+        
+
+        public Rectangle GetSourceRectangle(Vector3 position)
+        {
+            if (SourceRectangles.Count == 0)
+            {
+                return SourceRectangle;
             }
             return SourceRectangles[spriteIndex];
         }

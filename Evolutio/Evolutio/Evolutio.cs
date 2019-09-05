@@ -111,6 +111,10 @@ namespace Evolutio
         
         protected override void Draw(GameTime gameTime)
         {
+            ItemRegistry.Animate(gameTime);
+            
+            var framerate = Math.Floor(1 / gameTime.ElapsedGameTime.TotalSeconds);
+            
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
@@ -122,6 +126,7 @@ namespace Evolutio
             spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
             spriteBatch.DrawString(font, string.Format("Real player position : {0}", player.GetPlayerPositionInt()), new Vector2(10,40), Color.White);
             spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,60), Color.White);
+            spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,80), Color.White);
 
             if (showMap && textureMap != null)
             {
