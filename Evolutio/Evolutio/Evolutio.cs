@@ -21,8 +21,6 @@ namespace Evolutio
         public Texture2D textureMap;
         private bool showMap = false;
 
-        private GenerationParams gen;
-
         public const float SCALE = 4f;
 
         private KeyboardState oldState;
@@ -30,6 +28,8 @@ namespace Evolutio
         private MouseState _mouseState;
         
         private SpriteFont font;
+
+        private bool showStats = false;
 
         public Evolutio()
         {
@@ -41,8 +41,6 @@ namespace Evolutio
             player = new Player{World = World};
             behaviors.Add(new MapRenderer{World = World, Player = player});
             behaviors.Add(player);
-            
-            gen = new GenerationParams(World, this);
         }
         protected override void Initialize()
         {
@@ -70,14 +68,23 @@ namespace Evolutio
 
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState newState = Keyboard.GetState();
+            var newState = Keyboard.GetState();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && showMap)
+            if (oldState.IsKeyUp(Keys.Escape) && newState.IsKeyDown(Keys.Escape) && showMap)
             {
-                showMap = false;
-            } else if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (showMap)
+                {
+                    showMap = false;   
+                }
+                else
+                {
+                    Exit();
+                }
+            }
+            
+            if (oldState.IsKeyUp(Keys.F3) && newState.IsKeyDown(Keys.F3))
             {
-                //  Exit();
+                showStats = !showStats;
             }
 
             if (oldState.IsKeyUp(Keys.G) && newState.IsKeyDown(Keys.G))
@@ -89,14 +96,7 @@ namespace Evolutio
             if (Keyboard.GetState().IsKeyDown(Keys.M))
             {
                 showMap = true;
-                textureMap = World.GenerateImageFromMap(graphics.GraphicsDevice);
             }
-            
-            if (Keyboard.GetState().IsKeyDown(Keys.C))
-            {
-                gen.Show();
-            }
-
 
             foreach (var behavior in behaviors)
             {
@@ -105,6 +105,11 @@ namespace Evolutio
 
             oldState = newState;
             _mouseState = Mouse.GetState();
+
+            if (showMap && gameTime.TotalGameTime.Seconds % 5 == 0)
+            {
+                textureMap = World.GenerateImageFromMap(graphics.GraphicsDevice);
+            }
             
             base.Update(gameTime);
         }
@@ -123,10 +128,16 @@ namespace Evolutio
                 behavior.Draw(spriteBatch, gameTime);
             }
 
-            spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
-            spriteBatch.DrawString(font, string.Format("Real player position : {0}", player.GetPlayerPositionInt()), new Vector2(10,40), Color.White);
-            spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,60), Color.White);
-            spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,80), Color.White);
+            if (showStats)
+            {
+                spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
+                spriteBatch.DrawString(font, string.Format("Real player position : {0}", player.GetPlayerPositionInt()), new Vector2(10,30), Color.White);
+                spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,50), Color.White);
+                spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,70), Color.White);    
+                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,90), Color.White);
+            }
+
+            
 
             if (showMap && textureMap != null)
             {

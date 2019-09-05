@@ -32,6 +32,11 @@ namespace Evolutio.Client
                     if (tile == null) continue;
 
                     var color = Color.White;
+
+                    if (Player.SelectedTile != null && tile.Position.Equals(Player.SelectedTile))
+                    {
+                        color = Color.Violet;
+                    }
 //                    if (Player.GetPlayerPositionIntFloor().Equals(tile.Position))
 //                    {
 //                        color = Color.Red;
