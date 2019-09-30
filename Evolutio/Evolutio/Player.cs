@@ -109,13 +109,13 @@ namespace Evolutio
                     {
                         if (!item.CanWalk)
                         {
-                            canWalk = false;
+                           // canWalk = false;
                             break;
                         }
                     }
                     if (!tile.Ground.CanWalk)
                     {
-                        canWalk = false;
+                      //  canWalk = false;
                     }
 
                     if (canWalk)
@@ -148,11 +148,10 @@ namespace Evolutio
 
         public static Vector2 GetPlayerPositionInScreen()
         {
-            return new Vector2(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / 2 - 94,
-                GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height / 2 - 186);
+            return new Vector2(20 * Evolutio.SCALE * 16, 11 * Evolutio.SCALE * 16);
         }
 
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public void DrawPlayer(SpriteBatch spriteBatch, GameTime gameTime)
         {
             Rectangle rect = _direction.Rectangle;
             if (isWalking)
@@ -172,13 +171,19 @@ namespace Evolutio
             }
             
             spriteBatch.Draw(characterSprite,
-                GetPlayerPositionInScreen(),
+                  GetPlayerPositionInScreen(),
+             //  position,
                 new Rectangle(currentSprite, rect.Y,rect.Width,rect.Height),
                 Color.White,
                 0f, new Vector2(0, 0),
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);
+        }
+
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+         
         }
     }
 }

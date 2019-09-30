@@ -1,11 +1,21 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Evolutio
 {
     public class Item
     {
+        public Texture2D Texture2D { get; set; }
+
+        public Vector2 origin { get; set; }
+
+        public Item()
+        {
+            origin = Vector2.Zero;
+        }
+
         private int spriteIndex;
         public string Name { get; set; }
 

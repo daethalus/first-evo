@@ -19,9 +19,11 @@ namespace Evolutio
         private readonly List<ClientBehavior> behaviors = new List<ClientBehavior>();
 
         public Texture2D textureMap;
+        public Texture2D tree;
+        public Texture2D tree2;
         private bool showMap = false;
 
-        public const float SCALE = 4f;
+        public const float SCALE = 3f;
 
         private KeyboardState oldState;
 
@@ -29,7 +31,7 @@ namespace Evolutio
         
         private SpriteFont font;
 
-        private bool showStats = false;
+        private bool showStats;
 
         public Evolutio()
         {
@@ -55,10 +57,13 @@ namespace Evolutio
             Log.Debug("LoadContent");
             
             font = Content.Load<SpriteFont>("Font");
+            tree = Content.Load<Texture2D>("Sprite-0003");
+            
             foreach (var behavior in behaviors)
             {
                 behavior.LoadContent(Content);
             }
+            ItemRegistry.LoadContent(Content);
         }
         
         protected override void UnloadContent()
@@ -93,6 +98,12 @@ namespace Evolutio
                 textureMap = World.GenerateImageFromMap(graphics.GraphicsDevice);
             }
             
+            if (oldState.IsKeyUp(Keys.F11) && newState.IsKeyDown(Keys.F11))
+            {
+                graphics.ToggleFullScreen();
+                
+            }
+            
             if (Keyboard.GetState().IsKeyDown(Keys.M))
             {
                 showMap = true;
@@ -113,6 +124,8 @@ namespace Evolutio
             
             base.Update(gameTime);
         }
+        
+        bool gamb = false;
         
         protected override void Draw(GameTime gameTime)
         {
@@ -151,6 +164,43 @@ namespace Evolutio
                     SpriteEffects.None,
                     0f);
             }
+
+            var rotation = 0f;
+            if (gameTime.TotalGameTime.Milliseconds % 300 == 0)
+            {
+                if (!gamb)
+                {
+                    gamb = true;
+                    rotation = 0.02f;
+                }
+                else
+                {
+                    gamb = false;
+                    rotation = -0.03f;
+                }
+            }
+            
+//            spriteBatch.Draw(tree, 
+//                new Vector2(300,300),
+//                new Rectangle(0,0,64,64),
+//                Color.White,
+//                rotation, 
+//                new Vector2(32, 64),
+//                SCALE,
+//                SpriteEffects.None,
+//                0f);
+
+
+//            spriteBatch.Draw(tree2, 
+//                new Vector2(300,300),
+//                new Rectangle(0,0,128,128),
+//                Color.White,
+//                0, 
+//                new Vector2(32, 64),
+//                SCALE,
+//                SpriteEffects.None,
+//                0f);
+            
             spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -57,6 +57,13 @@ namespace Evolutio
                         {
                             Items.Add(Evolutio.ItemRegistry.findItem("stone"));
                         }
+                        
+                        rand = random.Next(100); 
+
+                        if (rand == 2)
+                        {
+                            Items.Add(Evolutio.ItemRegistry.findItem("tree"));
+                        }
                     }
 
                     if (x == 15 || y == 15)
