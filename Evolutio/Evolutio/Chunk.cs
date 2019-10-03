@@ -30,6 +30,7 @@ namespace Evolutio
                 {
                     
                     double value = mapBuilder.DestNoiseMap.GetValue(x, y);
+                    var position = new Vector3(ChunkPosition.X * 16 + x, ChunkPosition.Y * 16 + y, 0);
 
                     var item = "ground";
                     List<Item> Items = new List<Item>();
@@ -47,22 +48,28 @@ namespace Evolutio
                     }
                     else
                     {
-                        int rand = random.Next(60); 
+                        int rand = random.Next(60);
+                        var added = false;
                         if ( rand == 0)
                         {
                             Items.Add(Evolutio.ItemRegistry.findItem("bush"));
+                            added = true;
                         }
                         
                         if (rand == 1)
                         {
                             Items.Add(Evolutio.ItemRegistry.findItem("stone"));
+                            added = true;
                         }
-                        
-                        rand = random.Next(100); 
 
-                        if (rand == 2)
+                        if (!added)
                         {
-                            Items.Add(Evolutio.ItemRegistry.findItem("tree"));
+                            rand = random.Next(100); 
+
+                            if (rand == 2)
+                            {
+                                Items.Add(Evolutio.ItemRegistry.findItem("tree"));
+                            }
                         }
                     }
 
@@ -74,7 +81,7 @@ namespace Evolutio
                     AddTile(new Tile
                     {
                         Ground = Evolutio.ItemRegistry.findItem(item),
-                        Position = new Vector3(ChunkPosition.X * 16 + x, ChunkPosition.Y * 16 + y, 0),
+                        Position = position,
                         Items = Items
                     });
                 }

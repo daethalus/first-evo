@@ -11,6 +11,7 @@ namespace Evolutio
 {
     public class Player : ClientBehavior
     {
+        private Texture2D quadrado;
         public World World { get; set; }
 
         class Direction
@@ -41,6 +42,7 @@ namespace Evolutio
         public void LoadContent(ContentManager Content)
         {
             characterSprite = Content.Load<Texture2D>("Character");
+            quadrado = Content.Load<Texture2D>("quadrado");
             Log.Debug("character sprite loaded successfully");
         }
 
@@ -104,21 +106,7 @@ namespace Evolutio
                 var tile = World.GetTile(new Vector3((int) Math.Floor(newPlayerPositionWithMargin.X), (int) Math.Floor(newPlayerPositionWithMargin.Y), (int) newPlayerPositionWithMargin.Z));
                 if (tile != null)
                 {
-                    bool canWalk = true;
-                    foreach (var item in tile.Items)
-                    {
-                        if (!item.CanWalk)
-                        {
-                           // canWalk = false;
-                            break;
-                        }
-                    }
-                    if (!tile.Ground.CanWalk)
-                    {
-                      //  canWalk = false;
-                    }
-
-                    if (canWalk)
+                    if (tile.CanWalk())
                     {
                         isWalking = true;
                         PlayerPosition = newPlayerPosition;
@@ -141,14 +129,16 @@ namespace Evolutio
         {
             var x = (int) Math.Floor(mousePosition.X / (16 * Evolutio.SCALE));
             var y = (int) Math.Floor(mousePosition.Y / (16 * Evolutio.SCALE));
-            SelectedTile = new Vector3(x, y, 0) + new Vector3(GetPlayerPositionIntFloor().X - 14, GetPlayerPositionIntFloor().Y - 7, GetPlayerPositionIntFloor().Z);
-            Log.Debug("Position: {mousePosition} tile: {selectedTile} ", mousePosition, SelectedTile);
+            Log.Debug("X:{x}, Y:{Y} ",x, y);
+            
+         SelectedTile = new Vector3(x, y, 0) + new Vector3(PlayerPosition.X - 20, PlayerPosition.Y - 11, GetPlayerPositionIntFloor().Z);
+         Log.Debug("Position: {mousePosition} tile: {selectedTile} ", mousePosition, SelectedTile);
         }
 
 
         public static Vector2 GetPlayerPositionInScreen()
         {
-            return new Vector2(20 * Evolutio.SCALE * 16, 11 * Evolutio.SCALE * 16);
+            return new Vector2(19 * Evolutio.SCALE * 16, 10 * Evolutio.SCALE * 16);
         }
 
         public void DrawPlayer(SpriteBatch spriteBatch, GameTime gameTime)
@@ -170,12 +160,13 @@ namespace Evolutio
                 currentSprite = 0;
             }
             
-            spriteBatch.Draw(characterSprite,
-                  GetPlayerPositionInScreen(),
-             //  position,
+            spriteBatch.Draw(
+                characterSprite,
+                GetPlayerPositionInScreen(),
                 new Rectangle(currentSprite, rect.Y,rect.Width,rect.Height),
+                //new Rectangle(0, 0, 16, 32),
                 Color.White,
-                0f, new Vector2(0, 0),
+                0f, new Vector2(8, 24),
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);
@@ -183,7 +174,7 @@ namespace Evolutio
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-         
+           // DrawPlayer(spriteBatch,gameTime);
         }
     }
 }

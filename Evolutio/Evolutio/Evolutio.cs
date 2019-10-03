@@ -22,6 +22,7 @@ namespace Evolutio
         public Texture2D tree;
         public Texture2D tree2;
         private bool showMap = false;
+        private MapRenderer _renderer;
 
         public const float SCALE = 3f;
 
@@ -41,7 +42,8 @@ namespace Evolutio
             FormControl.Maximize(Window);
             
             player = new Player{World = World};
-            behaviors.Add(new MapRenderer{World = World, Player = player});
+            _renderer = new MapRenderer {World = World, Player = player};
+            behaviors.Add(_renderer);
             behaviors.Add(player);
         }
         protected override void Initialize()
@@ -144,10 +146,9 @@ namespace Evolutio
             if (showStats)
             {
                 spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
-                spriteBatch.DrawString(font, string.Format("Real player position : {0}", player.GetPlayerPositionInt()), new Vector2(10,30), Color.White);
                 spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,50), Color.White);
-                spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,70), Color.White);    
-                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,90), Color.White);
+                spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,90), Color.White);    
+                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,120), Color.White);
             }
 
             
@@ -164,43 +165,6 @@ namespace Evolutio
                     SpriteEffects.None,
                     0f);
             }
-
-            var rotation = 0f;
-            if (gameTime.TotalGameTime.Milliseconds % 300 == 0)
-            {
-                if (!gamb)
-                {
-                    gamb = true;
-                    rotation = 0.02f;
-                }
-                else
-                {
-                    gamb = false;
-                    rotation = -0.03f;
-                }
-            }
-            
-//            spriteBatch.Draw(tree, 
-//                new Vector2(300,300),
-//                new Rectangle(0,0,64,64),
-//                Color.White,
-//                rotation, 
-//                new Vector2(32, 64),
-//                SCALE,
-//                SpriteEffects.None,
-//                0f);
-
-
-//            spriteBatch.Draw(tree2, 
-//                new Vector2(300,300),
-//                new Rectangle(0,0,128,128),
-//                Color.White,
-//                0, 
-//                new Vector2(32, 64),
-//                SCALE,
-//                SpriteEffects.None,
-//                0f);
-            
             spriteBatch.End();
             base.Draw(gameTime);
         }

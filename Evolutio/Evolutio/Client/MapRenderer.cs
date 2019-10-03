@@ -7,10 +7,23 @@ namespace Evolutio.Client
 {
     public class MapRenderer : ClientBehavior
     {
+        private class RenderItem
+        {
+            public Item item;
+            public Vector2 screenPosition;
+            public Tile tile;
+            public Color color;
+        }
+        
+        private Texture2D quadrado;
+        
+        private readonly Vector2 renderSize = new Vector2(25,15);
+        
         public World World { get; set; }
         public Player Player { get; set; }
         public void LoadContent(ContentManager Content)
         {
+            quadrado = Content.Load<Texture2D>("quadrado");
           //  throw new System.NotImplementedException();
         }
 
@@ -20,43 +33,22 @@ namespace Evolutio.Client
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            var PlayerPosition = Player.GetPlayerPositionIntFloor();
-            var itemToRender = new List<KeyValuePair<Item,KeyValuePair<Vector2,Tile>>>();
-
-            List<KeyValuePair<Item,KeyValuePair<Vector2,Tile>>> itemaddPlayer = null;
+            List<RenderItem> itensToRender = new List<RenderItem>();
             
-            for (var y = PlayerPosition.Y - 25; y < PlayerPosition.Y + 25; y++)
+            var PlayerPosition = Player.GetPlayerPositionIntFloor();
+            
+            for (var y = PlayerPosition.Y - renderSize.Y; y <= PlayerPosition.Y + renderSize.Y; y++)
             {
-                for (var x = PlayerPosition.X - 40; x < PlayerPosition.X + 40; x++)
+                for (var x = PlayerPosition.X - renderSize.X; x <= PlayerPosition.X + renderSize.X; x++)
                 {
                     var tile = World.GetTile(new Vector3(x, y, 0));
-                    if (tile == null) continue;
+                    
+                    var p2 = new Vector2(x - Player.PlayerPosition.X, y - Player.PlayerPosition.Y);
+                    var position = new Vector2(p2.X * 16 * Evolutio.SCALE, p2.Y * 16 * Evolutio.SCALE);
+                    position += Player.GetPlayerPositionInScreen();
 
                     var color = Color.White;
 
-                    if (Player.SelectedTile != null && tile.Position.Equals(Player.SelectedTile))
-                    {
-                        color = Color.Violet;
-                    }
-
-//                    var ax = x - Player.PlayerPosition.X + 15;
-//                    var ay = y - Player.PlayerPosition.Y + 7;
-//                    var position = new Vector2(ax * (16 * Evolutio.SCALE), ay * (16 * Evolutio.SCALE));
-
-                    var ax = x - Player.PlayerPosition.X + 20;
-                    var ay = y - Player.PlayerPosition.Y + 11;
-
-                    var position = new Vector2(ax * (16 * Evolutio.SCALE), ay * (16 * Evolutio.SCALE));
-
-
-                    var drawplayer = Player.GetPlayerPositionIntFloor().Equals(tile.Position);
-
-                    if (drawplayer)
-                    {
-                        color = Color.Red;
-                    }
-                    
-                    
                     spriteBatch.Draw(tile.Ground.Texture2D, 
                         position,
                         tile.Ground.GetSourceRectangle(tile.Position),
@@ -66,32 +58,37 @@ namespace Evolutio.Client
                         SpriteEffects.None,
                         0f);
 
+
                     foreach (var item in tile.Items)
                     {
-                        var itemadd = new KeyValuePair<Item, KeyValuePair<Vector2, Tile>>(item,new KeyValuePair<Vector2, Tile>(position,tile));
-                        
-                        itemToRender.Add(itemadd);
+                        if (item.Name == "tree")
+                        {
+                            var ix = tile.Position.X - PlayerPosition.X;
+                            var iy = tile.Position.Y - PlayerPosition.Y;
 
-                    }
-                    
-                    if (drawplayer)
-                    {
-                        Player.DrawPlayer(spriteBatch,gameTime);
+                            if (ix > -3 && ix < 3 && iy > 0 && iy < 6)
+                            {
+                                color = Color.White * 0.7f;
+                            }
+                        }
+                        itensToRender.Add(new RenderItem{item = item,screenPosition = position,tile = tile, color = color});
                     }
                 }
             }
+            
+            Player.DrawPlayer(spriteBatch,gameTime);
 
-            foreach (var item in itemToRender)
+            foreach (var renderItem in itensToRender)
             {
-                spriteBatch.Draw(item.Key.Texture2D, 
-                    item.Value.Key,
-                    item.Key.GetSourceRectangle(item.Value.Value.Position),
-                    Color.White,
+                spriteBatch.Draw(renderItem.item.Texture2D, 
+                    renderItem.screenPosition,
+                    renderItem.item.GetSourceRectangle(renderItem.tile.Position),
+                    renderItem.color,
                     0f, 
-                    item.Key.origin,
+                    renderItem.item.origin,
                     Evolutio.SCALE,
                     SpriteEffects.None,
-                    0f);           
+                    0f);
             }
         }
     }
