@@ -33,7 +33,7 @@ namespace Evolutio
         private SpriteFont font;
 
         private bool showStats;
-
+        
         public Evolutio()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -137,6 +137,8 @@ namespace Evolutio
             
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            
+            //GameRenderer.Draw(spriteBatch, gameTime);
 
             foreach (var behavior in behaviors)
             {

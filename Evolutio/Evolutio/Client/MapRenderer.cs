@@ -13,6 +13,7 @@ namespace Evolutio.Client
             public Vector2 screenPosition;
             public Tile tile;
             public Color color;
+            public bool transparent;
         }
         
         private Texture2D quadrado;
@@ -33,6 +34,7 @@ namespace Evolutio.Client
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            var transparency = 0.7f;
             List<RenderItem> itensToRender = new List<RenderItem>();
             
             var PlayerPosition = Player.GetPlayerPositionIntFloor();
@@ -61,17 +63,19 @@ namespace Evolutio.Client
 
                     foreach (var item in tile.Items)
                     {
+                        var transparent = false;
                         if (item.Name == "tree")
                         {
                             var ix = tile.Position.X - PlayerPosition.X;
                             var iy = tile.Position.Y - PlayerPosition.Y;
-
+                            
                             if (ix > -3 && ix < 3 && iy > 0 && iy < 6)
                             {
-                                color = Color.White * 0.7f;
+                                transparency -= 0.1f;
+                                transparent = true;
                             }
                         }
-                        itensToRender.Add(new RenderItem{item = item,screenPosition = position,tile = tile, color = color});
+                        itensToRender.Add(new RenderItem{item = item,screenPosition = position,tile = tile, color = color, transparent = transparent});
                     }
                 }
             }
@@ -80,10 +84,15 @@ namespace Evolutio.Client
 
             foreach (var renderItem in itensToRender)
             {
+                var color = renderItem.color;
+                if (renderItem.transparent)
+                {
+                    color *= transparency;
+                }
                 spriteBatch.Draw(renderItem.item.Texture2D, 
                     renderItem.screenPosition,
                     renderItem.item.GetSourceRectangle(renderItem.tile.Position),
-                    renderItem.color,
+                    color,
                     0f, 
                     renderItem.item.origin,
                     Evolutio.SCALE,
