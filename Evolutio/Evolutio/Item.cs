@@ -11,6 +11,8 @@ namespace Evolutio
 
         public Vector2 origin { get; set; }
 
+        public int TotalDurability { get; set; }
+
         public Item()
         {
             origin = Vector2.Zero;
@@ -56,6 +58,12 @@ namespace Evolutio
                 return SourceRectangle;
             }
             return SourceRectangles[spriteIndex];
+        }
+
+
+        public ItemState createState()
+        {
+            return new ItemState(this);
         }
     }
 }

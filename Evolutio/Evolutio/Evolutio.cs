@@ -18,11 +18,11 @@ namespace Evolutio
         private Player player;
         private readonly List<ClientBehavior> behaviors = new List<ClientBehavior>();
 
-        public Texture2D textureMap;
-        public Texture2D tree;
-        public Texture2D tree2;
+        private Texture2D textureMap;
+        public Texture2D selectionSquare;
+        private Texture2D bottonMenu;
         private bool showMap = false;
-        private MapRenderer _renderer;
+        private GameRenderer _gameRenderer;
         public Camera Camera;
 
         public const float SCALE = 1f;
@@ -45,8 +45,7 @@ namespace Evolutio
             formControl.Maximize(Window);
 
             player = new Player{World = World, Evolutio = this};
-            _renderer = new MapRenderer {World = World, Player = player};
-            behaviors.Add(_renderer);
+            _gameRenderer = new GameRenderer {World = World, Player = player};
             behaviors.Add(player);
         }
         protected override void Initialize()
@@ -63,7 +62,8 @@ namespace Evolutio
             Log.Debug("LoadContent");
             
             font = Content.Load<SpriteFont>("Font");
-            tree = Content.Load<Texture2D>("Sprite-0003");
+            selectionSquare = Content.Load<Texture2D>("quadrado");
+            bottonMenu = Content.Load<Texture2D>("botton-menu");
             
             foreach (var behavior in behaviors)
             {
@@ -140,19 +140,15 @@ namespace Evolutio
             
             var framerate = Math.Floor(1 / gameTime.ElapsedGameTime.TotalSeconds);
             
-            //GraphicsDevice.Clear(Color.CornflowerBlue);
-            GraphicsDevice.Clear(Color.Red);
+            GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix:Camera.Transform);
             
-            //GameRenderer.Draw(spriteBatch, gameTime);
+            _gameRenderer.Draw(spriteBatch,gameTime);
 
             foreach (var behavior in behaviors)
             {
                 behavior.Draw(spriteBatch, gameTime);
             }
-
-            
-
             
 
             if (showMap && textureMap != null)
@@ -177,6 +173,18 @@ namespace Evolutio
                 spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,90), Color.White);    
                 spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,120), Color.White);
             }
+            
+            spriteBatch.Draw(bottonMenu, 
+                new Vector2((graphics.PreferredBackBufferWidth * 0.5f) - (90 * 3),graphics.PreferredBackBufferHeight - (20 * 3)),
+                new Rectangle(0,0,180,18),
+                Color.White,
+                0f, 
+                new Vector2(0, 0),
+                3,
+                SpriteEffects.None,
+                0f);
+
+
             spriteBatch.End();
             base.Draw(gameTime);
         }

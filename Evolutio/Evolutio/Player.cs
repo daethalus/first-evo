@@ -31,13 +31,18 @@ namespace Evolutio
         }
 
         public Vector3 PlayerPosition = new Vector3(0, 0, 0);
+        public Vector3 oldPlayerPosition = new Vector3(0, 0, 0);
         private Texture2D characterSprite;
         private Direction _direction = Direction.SOUTH;
         private bool isWalking = false;
         private int currentSprite = 0;
-        private MouseState oldState;
+        private MouseState oldMouseState;
+        private KeyboardState oldKeybordState;
+        private Vector2 mouseSelection;
+        public long lastTickAction;
 
         public Vector3 SelectedTile { get; set; }
+        public Vector3 AcionedItem { get; set; }
 
         private float speed;
 
@@ -50,20 +55,69 @@ namespace Evolutio
 
         public void Update(GameTime gameTime)
         {
-            MouseState newState = Mouse.GetState();
- 
-            if(newState.LeftButton == ButtonState.Pressed && oldState.LeftButton == ButtonState.Released)
+            oldPlayerPosition = PlayerPosition;
+            MouseState mouseState = Mouse.GetState();
+            
+            updateMouseSelection(mouseState.Position);
+            
+            if(mouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released)
             {
-                SelectBlock(newState.Position);
+                var oldSelected = SelectedTile;
+                SelectBlock(mouseState.Position);
+                
+                if (_direction == Direction.SOUTH)
+                {
+                    AcionedItem = GetPlayerPositionIntFloor() + new Vector3(0, 1, 0);
+                } else if (_direction == Direction.NORTH)
+                {
+                    AcionedItem = GetPlayerPositionIntFloor() - new Vector3(0, 1, 0);
+                } else if (_direction == Direction.WEST)
+                {
+                    AcionedItem = GetPlayerPositionIntFloor() - new Vector3(1, 0, 0);
+                } else if (_direction == Direction.EAST)
+                {
+                    AcionedItem = GetPlayerPositionIntFloor() + new Vector3(1, 0, 0);
+                }
+
+                if (AcionedItem == SelectedTile)
+                {
+                    lastTickAction = gameTime.TotalGameTime.Ticks;
+                    Tile tile = World.GetTile(AcionedItem);
+                    if (tile.Items.Count > 0)
+                    {
+                        var durability = tile.Items[tile.Items.Count - 1].ApplyDamage(100);
+                        if (durability <= 0)
+                        {
+                            tile.Items.RemoveAt(tile.Items.Count - 1);
+                        }
+                    } 
+                }
+
+
+//                if (oldSelected.Equals(SelectedTile))
+//                {
+//                    World.PlaceGround(Evolutio.ItemRegistry.findItem("ground"), new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+//                }
             }
             
-            oldState = newState;
+            if(mouseState.RightButton== ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released)
+            {
+                World.PlaceItem(Evolutio.ItemRegistry.findItem("stone"), new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+            }
+            
+            if (oldKeybordState.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+
+                
+            }
+            
+            oldMouseState = mouseState;
 
             speed = 0.1f;
             isWalking = false;
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
-                speed = 0.3f;
+                speed = 0.2f;
             }
 
             bool moved = false;
@@ -116,6 +170,8 @@ namespace Evolutio
                     }
                 }
             }
+            
+            oldKeybordState = Keyboard.GetState();
         }
 
         public Vector3 GetPlayerPositionInt()
@@ -130,20 +186,31 @@ namespace Evolutio
 
         public void SelectBlock(Point mousePosition)
         {
+//            var pos = new Vector2(
+//                (int) Math.Floor((mousePosition.X - Evolutio.Camera.Bounds.Width * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.X, 
+//                (int) Math.Floor((mousePosition.Y - Evolutio.Camera.Bounds.Height * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.Y
+//                );
+//            
+//            Log.Debug("pos: {pos}", pos);
+            //SelectedTile = new Vector3((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16), 0 );
+            SelectedTile = new Vector3(mouseSelection.X, mouseSelection.Y, 0);
+        }
+
+        public void updateMouseSelection(Point mousePosition)
+        {
             var pos = new Vector2(
                 (int) Math.Floor((mousePosition.X - Evolutio.Camera.Bounds.Width * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.X, 
                 (int) Math.Floor((mousePosition.Y - Evolutio.Camera.Bounds.Height * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.Y
-                );
-            
-            Log.Debug("pos: {pos}", pos);
-            SelectedTile = new Vector3((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16), 0 );
+            );
+
+            mouseSelection = new Vector2((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16));
         }
 
 
         public Vector2 GetPlayerPositionInScreen()
         {
             //return new Vector2(19 * Evolutio.SCALE * 16, 10 * Evolutio.SCALE * 16);
-            return new Vector2(PlayerPosition.X * 16,PlayerPosition.Y * 16);
+            return new Vector2(oldPlayerPosition.X * 16,oldPlayerPosition.Y * 16);
         }
 
         public void DrawPlayer(SpriteBatch spriteBatch, GameTime gameTime)
@@ -175,6 +242,19 @@ namespace Evolutio
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);
+
+            if (mouseSelection != null)
+            {
+                spriteBatch.Draw(
+                    Evolutio.selectionSquare,
+                    new Vector2((int) mouseSelection.X * 16, (int) mouseSelection.Y * 16),
+                    new Rectangle(0, 0, 16, 16),
+                    Color.White,
+                    0f, new Vector2(0, 0),
+                    Evolutio.SCALE,
+                    SpriteEffects.None,
+                    0f);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)

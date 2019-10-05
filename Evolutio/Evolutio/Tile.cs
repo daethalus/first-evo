@@ -6,9 +6,9 @@ namespace Evolutio
     public class Tile
     {
         public Vector3 Position { get; set; }
-        public Item Ground { get; set; }
+        public ItemState Ground { get; set; }
         
-        public List<Item> Items { get; set; }
+        public List<ItemState> Items { get; set; }
 
         private bool canWalk = true;
 
@@ -19,14 +19,14 @@ namespace Evolutio
                 return false;
             }
 
-            if (!Ground.CanWalk)
+            if (!Ground.CanWalk())
             {
                 return false;
             }
 
             foreach (var item in Items)
             {
-                if (!item.CanWalk)
+                if (!item.CanWalk())
                 {
                     return false;
                 }
