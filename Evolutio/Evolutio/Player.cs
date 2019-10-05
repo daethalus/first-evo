@@ -56,15 +56,20 @@ namespace Evolutio
 
         public void Update(GameTime gameTime)
         {
+            if (!FormControl.isFormActive(Evolutio.Window))
+            {
+                return;
+            }
             oldPlayerPosition = PlayerPosition;
-            MouseState mouseState = Mouse.GetState();
+            var mouseState = Mouse.GetState();
             
             updateMouseSelection(mouseState.Position);
             
             if(mouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released)
             {
                 var oldSelected = SelectedTile;
-                SelectBlock(mouseState.Position);
+                
+                SelectBlock();
                 
                 if (_direction == Direction.SOUTH)
                 {
@@ -92,12 +97,10 @@ namespace Evolutio
                             tile.Items.RemoveAt(tile.Items.Count - 1);
                         }
                     } 
-                }
-
-                if (oldSelected.Equals(SelectedTile))
+                } else if (oldSelected.Equals(SelectedTile))
                 { 
                     // WE SAY TO DEATH: 'NOT TODAY'
-                    // doingPathFinder = true;
+                     doingPathFinder = true;
                 }
 
 //                if (oldSelected.Equals(SelectedTile))
@@ -123,7 +126,7 @@ namespace Evolutio
             isWalking = false;
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
-                speed = 0.2f;
+                speed = 0.3f;
             }
 
             bool moved = false;
@@ -166,6 +169,11 @@ namespace Evolutio
                 
             }
 
+            if (oldKeybordState.IsKeyUp(Keys.R) && Keyboard.GetState().IsKeyDown(Keys.R))
+            {
+                World.PlaceGround(Evolutio.ItemRegistry.findItem("ground"), new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+            }
+
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 newPlayerPosition += new Vector3(0, speed, 0);
@@ -197,17 +205,21 @@ namespace Evolutio
                 _direction = Direction.EAST;
                 moved = true;
             }
-            
+
             if (moved)
             {
                 var tile = World.GetTile(new Vector3((int) Math.Floor(newPlayerPositionWithMargin.X), (int) Math.Floor(newPlayerPositionWithMargin.Y), (int) newPlayerPositionWithMargin.Z));
                 if (tile != null)
                 {
-                   // if (tile.CanWalk())
+                    if (tile.CanWalk())
                     {
                         isWalking = true;
                         PlayerPosition = newPlayerPosition;
                         Evolutio.Camera.MoveCamera(newPlayerPosition);
+                    }
+                    else
+                    {
+                        doingPathFinder = false;
                     }
                 }
             }
@@ -225,19 +237,12 @@ namespace Evolutio
             return new Vector3((int) Math.Floor(PlayerPosition.X),  (int) Math.Floor(PlayerPosition.Y), (int) Math.Floor(PlayerPosition.Z));
         }
 
-        public void SelectBlock(Point mousePosition)
+        private void SelectBlock()
         {
-//            var pos = new Vector2(
-//                (int) Math.Floor((mousePosition.X - Evolutio.Camera.Bounds.Width * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.X, 
-//                (int) Math.Floor((mousePosition.Y - Evolutio.Camera.Bounds.Height * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.Y
-//                );
-//            
-//            Log.Debug("pos: {pos}", pos);
-            //SelectedTile = new Vector3((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16), 0 );
             SelectedTile = new Vector3(mouseSelection.X, mouseSelection.Y, 0);
         }
 
-        public void updateMouseSelection(Point mousePosition)
+        private void updateMouseSelection(Point mousePosition)
         {
             var pos = new Vector2(
                 (int) Math.Floor((mousePosition.X - Evolutio.Camera.Bounds.Width * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.X, 

@@ -33,7 +33,7 @@ namespace Evolutio
         
         private SpriteFont font;
 
-        private bool showStats;
+        public static bool showStats;
         
         public Evolutio()
         {
@@ -132,8 +132,6 @@ namespace Evolutio
             base.Update(gameTime);
         }
         
-        bool gamb = false;
-        
         protected override void Draw(GameTime gameTime)
         {
             ItemRegistry.Animate(gameTime);
@@ -141,7 +139,7 @@ namespace Evolutio
             var framerate = Math.Floor(1 / gameTime.ElapsedGameTime.TotalSeconds);
             
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix:Camera.Transform);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, transformMatrix:Camera.Transform);
             
             _gameRenderer.Draw(spriteBatch,gameTime);
 

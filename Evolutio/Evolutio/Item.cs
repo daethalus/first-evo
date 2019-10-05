@@ -57,7 +57,13 @@ namespace Evolutio
             {
                 return SourceRectangle;
             }
-            return SourceRectangles[spriteIndex];
+
+            if (AnimationTime > 0)
+            { 
+                return SourceRectangles[spriteIndex];
+            }
+            
+            return SourceRectangles[0];
         }
 
 

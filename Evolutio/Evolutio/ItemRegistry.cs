@@ -17,8 +17,8 @@ namespace Evolutio
             var ground = new Item {Texture2D = overworld, Name = "ground", CanWalk = true};
             ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
             ground.addSourceRectangle(new Rectangle(112, 144, 16, 16));
-            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
-            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
+//            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
+//            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
             addItem(ground);
             
             

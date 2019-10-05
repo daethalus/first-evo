@@ -1,12 +1,15 @@
 using System;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Serilog;
 
 namespace Evolutio.Client
 {
     public class FormControl
     {
+        private const int defaultScreenWidth = 1920;
+        private const int defaultScreenHeight = 1080;
+        
         public Evolutio Evolutio { get; set; }
 
         public void AllowMaximizeForm(GameWindow window)
@@ -21,7 +24,7 @@ namespace Evolutio.Client
             form.WindowState = FormWindowState.Maximized;
         }
 
-        public bool isFormActive (GameWindow gameWindow)
+        public static bool isFormActive (GameWindow gameWindow)
         {
             var form = (Form)Form.FromHandle(gameWindow.Handle);
             return Form.ActiveForm == form;
@@ -33,7 +36,6 @@ namespace Evolutio.Client
             Evolutio.graphics.PreferredBackBufferHeight = Evolutio.Window.ClientBounds.Height;
             Evolutio.graphics.ApplyChanges();
             Evolutio.Camera.Bounds = Evolutio.graphics.GraphicsDevice.Viewport.Bounds;
-
         }
     }
 }

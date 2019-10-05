@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -49,8 +50,8 @@ namespace Evolutio
 
         public void MoveCamera(Vector3 movePosition)
         {
-            //var newPosition = Position + (movePosition * 16);
-            Position = movePosition * 16;
+            var newPosition = movePosition * 16;
+            Position = new Vector3((float) Math.Round(newPosition.X, 2),(float) Math.Round(newPosition.Y, 2),0f);
         }
 
         public void AdjustZoom(float zoomAmount)
