@@ -40,6 +40,7 @@ namespace Evolutio
         private KeyboardState oldKeybordState;
         private Vector2 mouseSelection;
         public long lastTickAction;
+        private bool doingPathFinder = false;
 
         public Vector3 SelectedTile { get; set; }
         public Vector3 AcionedItem { get; set; }
@@ -93,6 +94,11 @@ namespace Evolutio
                     } 
                 }
 
+                if (oldSelected.Equals(SelectedTile))
+                { 
+                    // WE SAY TO DEATH: 'NOT TODAY'
+                    // doingPathFinder = true;
+                }
 
 //                if (oldSelected.Equals(SelectedTile))
 //                {
@@ -124,6 +130,41 @@ namespace Evolutio
 
             var newPlayerPosition = PlayerPosition;
             var newPlayerPositionWithMargin = PlayerPosition;
+
+            if (doingPathFinder)
+            {
+                if (Math.Floor(SelectedTile.X) > Math.Floor(PlayerPosition.X))
+                {
+                    newPlayerPosition += new Vector3(speed, 0 , 0); 
+                    _direction = Direction.EAST;
+                    moved = true;
+                }
+                else if (Math.Floor(SelectedTile.X) < Math.Floor(PlayerPosition.X))
+                {
+                    newPlayerPosition -= new Vector3(speed, 0, 0);
+                    _direction = Direction.WEST;
+                    moved = true;
+                }
+                
+                if (Math.Floor(SelectedTile.Y) > Math.Floor(PlayerPosition.Y))
+                {
+                    newPlayerPosition += new Vector3(0, speed, 0);
+                    _direction = Direction.SOUTH;
+                    moved = true;
+                }
+                else if (Math.Floor(SelectedTile.Y) < Math.Floor(PlayerPosition.Y))
+                {
+                    newPlayerPosition -= new Vector3(0, speed, 0);
+                    _direction = Direction.NORTH;
+                    moved = true;
+                }
+
+                if (Math.Floor(SelectedTile.X) == Math.Floor(PlayerPosition.X) && Math.Floor(SelectedTile.Y) == Math.Floor(PlayerPosition.Y))
+                {
+                    doingPathFinder = false;
+                }
+                
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
@@ -162,7 +203,7 @@ namespace Evolutio
                 var tile = World.GetTile(new Vector3((int) Math.Floor(newPlayerPositionWithMargin.X), (int) Math.Floor(newPlayerPositionWithMargin.Y), (int) newPlayerPositionWithMargin.Z));
                 if (tile != null)
                 {
-                    if (tile.CanWalk())
+                   // if (tile.CanWalk())
                     {
                         isWalking = true;
                         PlayerPosition = newPlayerPosition;
