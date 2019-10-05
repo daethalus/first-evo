@@ -23,8 +23,9 @@ namespace Evolutio
         public Texture2D tree2;
         private bool showMap = false;
         private MapRenderer _renderer;
+        public Camera Camera;
 
-        public const float SCALE = 3f;
+        public const float SCALE = 1f;
 
         private KeyboardState oldState;
 
@@ -38,10 +39,12 @@ namespace Evolutio
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Window.AllowUserResizing = true;
-            FormControl.Maximize(Window);
             
-            player = new Player{World = World};
+            var formControl = new FormControl{Evolutio = this};
+            formControl.AllowMaximizeForm(Window);
+            formControl.Maximize(Window);
+
+            player = new Player{World = World, Evolutio = this};
             _renderer = new MapRenderer {World = World, Player = player};
             behaviors.Add(_renderer);
             behaviors.Add(player);
@@ -51,6 +54,7 @@ namespace Evolutio
             Log.Debug("Initialize");
             IsMouseVisible = true;
             base.Initialize();
+            Camera = new Camera(graphics.GraphicsDevice.Viewport);
         }
         
         protected override void LoadContent()
@@ -75,6 +79,7 @@ namespace Evolutio
 
         protected override void Update(GameTime gameTime)
         {
+            Camera.UpdateMatrix();
             var newState = Keyboard.GetState();
 
             if (oldState.IsKeyUp(Keys.Escape) && newState.IsKeyDown(Keys.Escape) && showMap)
@@ -135,8 +140,9 @@ namespace Evolutio
             
             var framerate = Math.Floor(1 / gameTime.ElapsedGameTime.TotalSeconds);
             
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            //GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Red);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix:Camera.Transform);
             
             //GameRenderer.Draw(spriteBatch, gameTime);
 
@@ -145,13 +151,7 @@ namespace Evolutio
                 behavior.Draw(spriteBatch, gameTime);
             }
 
-            if (showStats)
-            {
-                spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
-                spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,50), Color.White);
-                spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,90), Color.White);    
-                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,120), Color.White);
-            }
+            
 
             
 
@@ -166,6 +166,16 @@ namespace Evolutio
                     5,
                     SpriteEffects.None,
                     0f);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin();
+            if (showStats)
+            {
+                spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
+                spriteBatch.DrawString(font, string.Format("Camera position : {0}", Camera.Position), new Vector2(10,30), Color.White);
+                spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,50), Color.White);
+                spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,90), Color.White);    
+                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,120), Color.White);
             }
             spriteBatch.End();
             base.Draw(gameTime);

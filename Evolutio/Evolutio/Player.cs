@@ -14,6 +14,8 @@ namespace Evolutio
         private Texture2D quadrado;
         public World World { get; set; }
 
+        public Evolutio Evolutio { get; set; }
+
         class Direction
         {
             public Rectangle Rectangle;
@@ -57,7 +59,7 @@ namespace Evolutio
             
             oldState = newState;
 
-            speed = 0.07f;
+            speed = 0.1f;
             isWalking = false;
             if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
             {
@@ -110,6 +112,7 @@ namespace Evolutio
                     {
                         isWalking = true;
                         PlayerPosition = newPlayerPosition;
+                        Evolutio.Camera.MoveCamera(newPlayerPosition);
                     }
                 }
             }
@@ -127,18 +130,20 @@ namespace Evolutio
 
         public void SelectBlock(Point mousePosition)
         {
-            var x = (int) Math.Floor(mousePosition.X / (16 * Evolutio.SCALE));
-            var y = (int) Math.Floor(mousePosition.Y / (16 * Evolutio.SCALE));
-            Log.Debug("X:{x}, Y:{Y} ",x, y);
+            var pos = new Vector2(
+                (int) Math.Floor((mousePosition.X - Evolutio.Camera.Bounds.Width * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.X, 
+                (int) Math.Floor((mousePosition.Y - Evolutio.Camera.Bounds.Height * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.Y
+                );
             
-         SelectedTile = new Vector3(x, y, 0) + new Vector3(PlayerPosition.X - 20, PlayerPosition.Y - 11, GetPlayerPositionIntFloor().Z);
-         Log.Debug("Position: {mousePosition} tile: {selectedTile} ", mousePosition, SelectedTile);
+            Log.Debug("pos: {pos}", pos);
+            SelectedTile = new Vector3((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16), 0 );
         }
 
 
-        public static Vector2 GetPlayerPositionInScreen()
+        public Vector2 GetPlayerPositionInScreen()
         {
-            return new Vector2(19 * Evolutio.SCALE * 16, 10 * Evolutio.SCALE * 16);
+            //return new Vector2(19 * Evolutio.SCALE * 16, 10 * Evolutio.SCALE * 16);
+            return new Vector2(PlayerPosition.X * 16,PlayerPosition.Y * 16);
         }
 
         public void DrawPlayer(SpriteBatch spriteBatch, GameTime gameTime)
@@ -146,7 +151,7 @@ namespace Evolutio
             Rectangle rect = _direction.Rectangle;
             if (isWalking)
             {
-                if (gameTime.TotalGameTime.Milliseconds % 100 == 0)
+                if (gameTime.TotalGameTime.Ticks % 6 == 0)
                 {
                     currentSprite += 16;
                     if (currentSprite > 48)

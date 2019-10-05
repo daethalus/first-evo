@@ -44,15 +44,16 @@ namespace Evolutio.Client
                 for (var x = PlayerPosition.X - renderSize.X; x <= PlayerPosition.X + renderSize.X; x++)
                 {
                     var tile = World.GetTile(new Vector3(x, y, 0));
-                    
-                    var p2 = new Vector2(x - Player.PlayerPosition.X, y - Player.PlayerPosition.Y);
-                    var position = new Vector2(p2.X * 16 * Evolutio.SCALE, p2.Y * 16 * Evolutio.SCALE);
-                    position += Player.GetPlayerPositionInScreen();
 
                     var color = Color.White;
 
+                    if (Player.SelectedTile == new Vector3(x, y, 0))
+                    {
+                        color = Color.Red;
+                    }
+
                     spriteBatch.Draw(tile.Ground.Texture2D, 
-                        position,
+                        new Vector2(x * 16, y * 16),
                         tile.Ground.GetSourceRectangle(tile.Position),
                         color,
                         0f, tile.Ground.origin,
@@ -75,7 +76,7 @@ namespace Evolutio.Client
                                 transparent = true;
                             }
                         }
-                        itensToRender.Add(new RenderItem{item = item,screenPosition = position,tile = tile, color = color, transparent = transparent});
+                        itensToRender.Add(new RenderItem{item = item,screenPosition = new Vector2(x * 16, y * 16),tile = tile, color = color, transparent = transparent});
                     }
                 }
             }
