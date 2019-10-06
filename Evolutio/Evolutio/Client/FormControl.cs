@@ -9,12 +9,15 @@ namespace Evolutio.Client
     {
         private const int defaultScreenWidth = 1920;
         private const int defaultScreenHeight = 1080;
+
+        private GameWindow _window;
         
         public Evolutio Evolutio { get; set; }
 
         public void AllowMaximizeForm(GameWindow window)
         {
             window.AllowUserResizing = true;
+            _window = window;
             window.ClientSizeChanged += OnResize;
         }
         
@@ -32,10 +35,17 @@ namespace Evolutio.Client
         
         public void OnResize(Object sender, EventArgs e)
         {
+            _window.ClientSizeChanged -= OnResize;
             Evolutio.graphics.PreferredBackBufferWidth = Evolutio.Window.ClientBounds.Width;
-            Evolutio.graphics.PreferredBackBufferHeight = Evolutio.Window.ClientBounds.Height;
+            var height = Evolutio.Window.ClientBounds.Height;
+            if (height % 2 != 0)
+            {
+                height++;
+            }
+            Evolutio.graphics.PreferredBackBufferHeight = height;
             Evolutio.graphics.ApplyChanges();
             Evolutio.Camera.Bounds = Evolutio.graphics.GraphicsDevice.Viewport.Bounds;
+            _window.ClientSizeChanged += OnResize;
         }
     }
 }

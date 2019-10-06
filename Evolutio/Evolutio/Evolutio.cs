@@ -39,11 +39,7 @@ namespace Evolutio
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            
-            var formControl = new FormControl{Evolutio = this};
-            formControl.AllowMaximizeForm(Window);
-            formControl.Maximize(Window);
-
+         
             player = new Player{World = World, Evolutio = this};
             _gameRenderer = new GameRenderer {World = World, Player = player};
             behaviors.Add(player);
@@ -54,6 +50,9 @@ namespace Evolutio
             IsMouseVisible = true;
             base.Initialize();
             Camera = new Camera(graphics.GraphicsDevice.Viewport);
+            var formControl = new FormControl{Evolutio = this};
+            formControl.AllowMaximizeForm(Window);
+            formControl.Maximize(Window);
         }
         
         protected override void LoadContent()
