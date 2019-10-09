@@ -111,7 +111,11 @@ namespace Evolutio
             
             if(mouseState.RightButton== ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released)
             {
-                World.PlaceItem(Evolutio.ItemRegistry.findItem("stone"), new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+                var itemStack = Evolutio.BottomMenu.GetSelectecItem();
+                if (itemStack != null)
+                {
+                    World.PlaceItem(itemStack.Item, new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+                }
             }
             
             if (oldKeybordState.IsKeyUp(Keys.Space) && Keyboard.GetState().IsKeyDown(Keys.Space))
@@ -166,7 +170,9 @@ namespace Evolutio
                 {
                     doingPathFinder = false;
                 }
-                
+
+                newPlayerPositionWithMargin = newPlayerPosition;
+
             }
 
             if (oldKeybordState.IsKeyUp(Keys.R) && Keyboard.GetState().IsKeyDown(Keys.R))
@@ -193,7 +199,7 @@ namespace Evolutio
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
                 newPlayerPosition -= new Vector3(speed, 0, 0);
-                newPlayerPositionWithMargin -= new Vector3(speed + + 0.2f, 0, 0);
+                newPlayerPositionWithMargin -= new Vector3(speed + 0.2f, 0, 0);
                 _direction = Direction.WEST;
                 moved = true;
             }
@@ -225,6 +231,16 @@ namespace Evolutio
             }
             
             oldKeybordState = Keyboard.GetState();
+        }
+
+        public void DrawGame(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            
+        }
+
+        public void DrawFixed(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+            
         }
 
         public Vector3 GetPlayerPositionInt()

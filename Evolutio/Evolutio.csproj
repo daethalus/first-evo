@@ -45,13 +45,14 @@
   <ItemGroup>
     <Compile Include="Evolutio\Camera.cs" />
     <Compile Include="Evolutio\Chunk.cs" />
+    <Compile Include="Evolutio\Client\BottomMenu.cs" />
     <Compile Include="Evolutio\Client\ClientBehavior.cs" />
     <Compile Include="Evolutio\Client\FormControl.cs" />
     <Compile Include="Evolutio\Evolutio.cs" />
     <Compile Include="Evolutio\GameRenderer.cs" />
     <Compile Include="Evolutio\Item.cs" />
     <Compile Include="Evolutio\ItemRegistry.cs" />
-    <Compile Include="Evolutio\ItemState.cs" />
+    <Compile Include="Evolutio\ItemStack.cs" />
     <Compile Include="Evolutio\Player.cs" />
     <Compile Include="Evolutio\Tile.cs" />
     <Compile Include="Evolutio\World.cs" />

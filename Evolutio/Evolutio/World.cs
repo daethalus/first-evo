@@ -11,7 +11,6 @@ namespace Evolutio
 {
     public class World
     {
-
         public int ax = 16;
         public int ay = 16;
         public int OctaveCount = 5;
@@ -24,7 +23,7 @@ namespace Evolutio
 
         private int _seed;
         private Random _random;
-        
+
         private Perlin _perlin;
         private ScaleBias _scaleBias;
         private Clamp _clamp;
@@ -36,7 +35,7 @@ namespace Evolutio
         {
             _seed = new Random().Next();
             _random = new Random(_seed);
-            
+
             _perlin = new Perlin
             {
                 Seed = _seed,
@@ -47,19 +46,19 @@ namespace Evolutio
 
             _scaleBias = new ScaleBias
             {
-                Source0 = _perlin, 
-                Scale = Scale, 
+                Source0 = _perlin,
+                Scale = Scale,
                 Bias = Bias
             };
 
             _clamp = new Clamp
             {
-                LowerBound = LowerBound, 
-                UpperBound = UpperBound, 
+                LowerBound = LowerBound,
+                UpperBound = UpperBound,
                 Source0 = _scaleBias
             };
-            
-            _builder =  new PlaneNoiseMapBuilder
+
+            _builder = new PlaneNoiseMapBuilder
             {
                 DestNoiseMap = new NoiseMap(),
                 SourceModule = _clamp,
@@ -70,7 +69,6 @@ namespace Evolutio
 
         public void GenerateMap()
         {
-            
         }
 
         public Tile GetTile(Vector3 vector3)
@@ -85,7 +83,7 @@ namespace Evolutio
         {
             return GetChunkForPosition(new Vector2((int) vector3.X >> 4, (int) vector3.Y >> 4));
         }
-        
+
         public Chunk GetChunkForPosition(Vector2 chunkPosition)
         {
             Chunk chunk;
@@ -93,6 +91,7 @@ namespace Evolutio
             {
                 return chunk;
             }
+
             chunk = new Chunk
             {
                 ChunkPosition = chunkPosition
@@ -101,8 +100,7 @@ namespace Evolutio
             ChunkMap.Add(chunkPosition, chunk);
             return chunk;
         }
-        
-        
+
 
         public Texture2D GenerateImageFromMap(GraphicsDevice device)
         {
@@ -135,13 +133,13 @@ namespace Evolutio
         public void PlaceItem(Item item, Vector3 vector3)
         {
             var tile = GetTile(vector3);
-            tile.Items.Add(item.createState());
+            tile.Items.Add(item.createItemStack());
         }
 
         public void PlaceGround(Item item, Vector3 vector3)
         {
             var tile = GetTile(vector3);
-            tile.Ground = item.createState();
+            tile.Ground = item.createItemStack();
         }
     }
 }

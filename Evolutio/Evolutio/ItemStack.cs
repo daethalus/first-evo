@@ -2,16 +2,18 @@ using System;
 
 namespace Evolutio
 {
-    public class ItemState
+    public class ItemStack
     {
         private int durability;
+        private int quantity;
 
         public Item Item { get; private set; }
 
-        public ItemState(Item item)
+        public ItemStack(Item item)
         {
             Item = item;
             durability = item.TotalDurability;
+            quantity = 0;
         }
 
         public bool CanWalk()

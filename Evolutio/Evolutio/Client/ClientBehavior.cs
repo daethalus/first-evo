@@ -10,6 +10,8 @@ namespace Evolutio.Client
         
         void Update(GameTime gameTime);
 
-        void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+        void DrawGame(SpriteBatch spriteBatch, GameTime gameTime);
+        
+        void DrawFixed(SpriteBatch spriteBatch, GameTime gameTime);
     }
 }

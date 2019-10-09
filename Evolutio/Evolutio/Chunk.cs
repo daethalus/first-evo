@@ -33,7 +33,7 @@ namespace Evolutio
                     var position = new Vector3(ChunkPosition.X * 16 + x, ChunkPosition.Y * 16 + y, 0);
 
                     var item = "ground";
-                    List<ItemState> Items = new List<ItemState>();
+                    List<ItemStack> Items = new List<ItemStack>();
 
                     if (value < 0)
                     {
@@ -52,13 +52,13 @@ namespace Evolutio
                         var added = false;
                         if ( rand == 0)
                         {
-                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createState());
+                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createItemStack());
                             added = true;
                         }
                         
                         if (rand == 1)
                         {
-                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createState());
+                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createItemStack());
                             added = true;
                         }
 
@@ -68,7 +68,7 @@ namespace Evolutio
 
                             if (rand == 2)
                             {
-                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createState());
+                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createItemStack());
                             }
                         }
                     }
@@ -80,7 +80,7 @@ namespace Evolutio
 
                     AddTile(new Tile
                     {
-                        Ground = Evolutio.ItemRegistry.findItem(item).createState(),
+                        Ground = Evolutio.ItemRegistry.findItem(item).createItemStack(),
                         Position = position,
                         Items = Items
                     });

@@ -7,6 +7,12 @@ namespace Evolutio
 {
     public class ItemRegistry
     {
+        public static Item STONE;
+        public static Item GROUND;
+        public static Item DETAIL;
+        public static Item BUSH;
+        
+        
         private Dictionary<string, Item> Items {get; set; }
 
         public void LoadContent(ContentManager Content)
@@ -19,7 +25,7 @@ namespace Evolutio
             ground.addSourceRectangle(new Rectangle(112, 144, 16, 16));
 //            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
 //            ground.addSourceRectangle(new Rectangle(0, 0, 16, 16));
-            addItem(ground);
+            GROUND = addItem(ground);
             
             
             addItem(new Item {Texture2D = overworld, Name = "water",SourceRectangle = new Rectangle(48,112,16,16), CanWalk = false});
@@ -33,16 +39,17 @@ namespace Evolutio
             
             addItem(wave);
             
-            addItem(new Item {Texture2D = overworld, Name = "other",SourceRectangle = new Rectangle(16,0,16,16), CanWalk = true});
-            addItem(new Item {Texture2D = overworld, Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = false, TotalDurability = 200});
-            addItem(new Item {Texture2D = overworld, Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = false, TotalDurability = 300});
+            DETAIL = addItem(new Item {Texture2D = overworld, Name = "other",SourceRectangle = new Rectangle(16,0,16,16), CanWalk = true, TotalDurability = 50});
+            BUSH = addItem(new Item {Texture2D = overworld, Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = false, TotalDurability = 200});
+            STONE = addItem(new Item {Texture2D = overworld, Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = false, TotalDurability = 300});
             
             addItem(new Item {Texture2D = Content.Load<Texture2D>("tree-pt2-2-test"), Name = "tree",SourceRectangle = new Rectangle(0,0,80,96), CanWalk = false, origin = new Vector2(34,80),TotalDurability = 500});
         }
         
-        public void addItem(Item item)
+        public Item addItem(Item item)
         {
             Items.Add(item.Name,item);
+            return item;
         }
 
         public Item findItem(string name)

@@ -6,9 +6,9 @@ namespace Evolutio
     public class Tile
     {
         public Vector3 Position { get; set; }
-        public ItemState Ground { get; set; }
+        public ItemStack Ground { get; set; }
         
-        public List<ItemState> Items { get; set; }
+        public List<ItemStack> Items { get; set; }
 
         private bool canWalk = true;
 

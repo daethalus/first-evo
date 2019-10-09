@@ -67,9 +67,9 @@ namespace Evolutio
         }
 
 
-        public ItemState createState()
+        public ItemStack createItemStack()
         {
-            return new ItemState(this);
+            return new ItemStack(this);
         }
     }
 }
