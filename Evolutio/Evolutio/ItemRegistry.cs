@@ -43,7 +43,7 @@ namespace Evolutio
             BUSH = addItem(new Item {Texture2D = overworld, Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = false, TotalDurability = 200});
             STONE = addItem(new Item {Texture2D = overworld, Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = false, TotalDurability = 300});
             
-            addItem(new Item {Texture2D = Content.Load<Texture2D>("tree-pt2-2-test"), Name = "tree",SourceRectangle = new Rectangle(0,0,80,96), CanWalk = false, origin = new Vector2(34,80),TotalDurability = 500});
+            addItem(new Item {Texture2D = Content.Load<Texture2D>("tree-pt2-2-test"), Name = "tree",SourceRectangle = new Rectangle(0,0,80,96), CanWalk = false, origin = new Vector2(34,80),TotalDurability = 500, CanPick = false});
         }
         
         public Item addItem(Item item)

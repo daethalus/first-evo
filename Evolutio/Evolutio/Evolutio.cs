@@ -15,7 +15,7 @@ namespace Evolutio
         SpriteBatch spriteBatch;
         public static readonly ItemRegistry ItemRegistry = new ItemRegistry();
         public static World World = new World();
-        private Player player;
+        public Player Player;
         private readonly List<ClientBehavior> behaviors = new List<ClientBehavior>();
 
         private Texture2D textureMap;
@@ -31,7 +31,7 @@ namespace Evolutio
 
         private MouseState _mouseState;
         
-        private SpriteFont font;
+        public SpriteFont font;
 
         public static bool showStats;
         
@@ -42,12 +42,12 @@ namespace Evolutio
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
          
-            player = new Player{World = World, Evolutio = this};
-            _gameRenderer = new GameRenderer {World = World, Player = player};
+            Player = new Player{World = World, Evolutio = this};
+            _gameRenderer = new GameRenderer {World = World, Player = Player};
             BottomMenu = new BottomMenu{Evolutio = this};
 
             behaviors.Add(BottomMenu);
-            behaviors.Add(player);
+            behaviors.Add(Player);
         }
         protected override void Initialize()
         {
@@ -168,11 +168,11 @@ namespace Evolutio
             spriteBatch.Begin(samplerState:SamplerState.PointClamp);
             if (showStats)
             {
-                spriteBatch.DrawString(font, string.Format("Player position : {0}", player.PlayerPosition), new Vector2(10,10), Color.White);
+                spriteBatch.DrawString(font, string.Format("Player position : {0}", Player.PlayerPosition), new Vector2(10,10), Color.White);
                 spriteBatch.DrawString(font, string.Format("Camera position : {0}", Camera.Position), new Vector2(10,30), Color.White);
                 spriteBatch.DrawString(font, string.Format("Mouse position : {0}", _mouseState.Position), new Vector2(10,50), Color.White);
                 spriteBatch.DrawString(font, string.Format("FPS : {0}", framerate), new Vector2(10,90), Color.White);    
-                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", player.SelectedTile), new Vector2(10,120), Color.White);
+                spriteBatch.DrawString(font, string.Format("Selected tile : {0}", Player.SelectedTile), new Vector2(10,120), Color.White);
             }
             
             foreach (var behavior in behaviors)

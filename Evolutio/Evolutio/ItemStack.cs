@@ -5,7 +5,7 @@ namespace Evolutio
     public class ItemStack
     {
         private int durability;
-        private int quantity;
+        public int Quantity { get; private set; }
 
         public Item Item { get; private set; }
 
@@ -13,7 +13,7 @@ namespace Evolutio
         {
             Item = item;
             durability = item.TotalDurability;
-            quantity = 0;
+            Quantity = 1;
         }
 
         public bool CanWalk()
@@ -29,6 +29,12 @@ namespace Evolutio
             }
             
             return durability -= damage;
+        }
+        
+        public int ChangeQuantity(int _quantity)
+        {
+            Quantity += _quantity;
+            return Quantity;
         }
     }
 }

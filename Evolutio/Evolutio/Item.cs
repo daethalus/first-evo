@@ -8,33 +8,29 @@ namespace Evolutio
     public class Item
     {
         public Texture2D Texture2D { get; set; }
-
         public Vector2 origin { get; set; }
-
         public int TotalDurability { get; set; }
-
+        private int spriteIndex;
+        public string Name { get; set; }
+        private readonly List<Rectangle> SourceRectangles = new List<Rectangle>();
+        public Rectangle SourceRectangle { get; set; }
+        public bool CanWalk { get; set; }
+        public Int16 AnimationTime { get; set; }
+        public bool CanPick { get; set; }
+        
         public Item()
         {
             origin = Vector2.Zero;
+            CanPick = true;
         }
 
-        private int spriteIndex;
-        public string Name { get; set; }
-
-        private readonly List<Rectangle> SourceRectangles = new List<Rectangle>();
-
-        public Rectangle SourceRectangle { get; set; }
-
-        public bool CanWalk { get; set; }
-
-        public Int16 AnimationTime { get; set; }
 
         public Item addSourceRectangle(Rectangle rectangle)
         {
             SourceRectangles.Add(rectangle);
             return this;
         }
-        
+
         public void Animate(GameTime time)
         {
             if (AnimationTime > 0)
@@ -49,7 +45,6 @@ namespace Evolutio
                 }
             }
         }
-        
 
         public Rectangle GetSourceRectangle(Vector3 position)
         {
@@ -59,10 +54,10 @@ namespace Evolutio
             }
 
             if (AnimationTime > 0)
-            { 
+            {
                 return SourceRectangles[spriteIndex];
             }
-            
+
             return SourceRectangles[0];
         }
 
@@ -70,6 +65,11 @@ namespace Evolutio
         public ItemStack createItemStack()
         {
             return new ItemStack(this);
+        }
+
+        public ItemStack CreatePickable()
+        {
+            return CanPick ? new ItemStack(this) : null;
         }
     }
 }

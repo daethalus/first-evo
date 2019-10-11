@@ -11,12 +11,13 @@ namespace Evolutio
         public Player Player { get; set; }
 
         private bool rotationState = false;
+        private bool _pickableMoviment = true;
+        private int _pickablePosition = 4;
 
         private readonly Vector2 renderSize = new Vector2(25, 15);
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-
             var playerIsDrawed = false;
             var transparency = 0.7f;
             List<Tile> tiles = new List<Tile>();
@@ -47,6 +48,30 @@ namespace Evolutio
                         0f);
                 }
             }
+            
+            if (gameTime.TotalGameTime.Ticks % 10 == 0)
+            {
+                if (_pickableMoviment) 
+                {
+                    _pickablePosition++;
+                }
+                            
+                if (!_pickableMoviment)
+                {
+                    _pickablePosition--;
+                }
+
+                if (_pickablePosition >= 4)
+                {
+                    _pickableMoviment = false;
+                }
+
+                if (_pickablePosition <= 2)
+                {
+                    _pickableMoviment = true;
+                }
+                            
+            }            
 
             foreach (var tile in tiles)
             {
@@ -108,9 +133,23 @@ namespace Evolutio
                         state.Item.origin,
                         Evolutio.SCALE,
                         SpriteEffects.None,
-                        0f);                    
+                        0f);
+                }
+
+                foreach (var pickableItem in tile.PickableItems)
+                {
+                    spriteBatch.Draw(pickableItem.Item.Texture2D,
+                        new Vector2((tile.Position.X * 16) + 4, (tile.Position.Y * 16) + _pickablePosition),
+                        pickableItem.Item.GetSourceRectangle(tile.Position),
+                        Color.White,
+                        0f,
+                        pickableItem.Item.origin,
+                        0.5f,
+                        SpriteEffects.None,
+                        0f);
                 }
             }
+             
 
             if (!playerIsDrawed)
             {

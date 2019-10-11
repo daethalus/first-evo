@@ -41,11 +41,17 @@ namespace Evolutio
         private Vector2 mouseSelection;
         public long lastTickAction;
         private bool doingPathFinder = false;
+        public ItemStack[] ButtomStacks { get; private set; }
 
         public Vector3 SelectedTile { get; set; }
         public Vector3 AcionedItem { get; set; }
 
         private float speed;
+
+        public Player()
+        {
+            ButtomStacks = new ItemStack [10];
+        }
 
         public void LoadContent(ContentManager Content)
         {
@@ -91,10 +97,16 @@ namespace Evolutio
                     Tile tile = World.GetTile(AcionedItem);
                     if (tile.Items.Count > 0)
                     {
-                        var durability = tile.Items[tile.Items.Count - 1].ApplyDamage(100);
+                        var item = tile.Items[tile.Items.Count - 1];
+                        var durability = item.ApplyDamage(100);
                         if (durability <= 0)
                         {
                             tile.Items.RemoveAt(tile.Items.Count - 1);
+                            var pickable = item.Item.CreatePickable();
+                            if (pickable != null)
+                            {
+                                tile.PickableItems.Add(pickable);
+                            }
                         }
                     } 
                 } else if (oldSelected.Equals(SelectedTile))
@@ -115,6 +127,12 @@ namespace Evolutio
                 if (itemStack != null)
                 {
                     World.PlaceItem(itemStack.Item, new Vector3(mouseSelection.X, mouseSelection.Y, 0));
+                    itemStack.ChangeQuantity(-1);
+                    if (itemStack.Quantity <= 0)
+                    {
+                        RemoveItem(itemStack);
+                    }
+
                 }
             }
             
@@ -222,6 +240,14 @@ namespace Evolutio
                         isWalking = true;
                         PlayerPosition = newPlayerPosition;
                         Evolutio.Camera.MoveCamera(newPlayerPosition);
+                        if (tile.PickableItems.Count > 0)
+                        {
+                            foreach (var itemStack in tile.PickableItems)
+                            {
+                                GiveItem(itemStack);
+                            }
+                            tile.PickableItems.Clear();
+                        }
                     }
                     else
                     {
@@ -229,7 +255,6 @@ namespace Evolutio
                     }
                 }
             }
-            
             oldKeybordState = Keyboard.GetState();
         }
 
@@ -323,5 +348,36 @@ namespace Evolutio
         {
            // DrawPlayer(spriteBatch,gameTime);
         }
+        
+        public bool GiveItem(ItemStack itemStack)
+        {
+            for (int i = 0; i < ButtomStacks.Length; i++)
+            {
+                if (ButtomStacks[i] == null)
+                {
+                    ButtomStacks[i] = itemStack;
+                    return true;
+                }
+                
+                if (ButtomStacks[i].Item == itemStack.Item)
+                {
+                    ButtomStacks[i].ChangeQuantity(itemStack.Quantity);
+                    return true;
+                } 
+            }
+            return false;
+        }
+
+        public void RemoveItem(ItemStack itemStack)
+        {
+            for (int i = 0; i < ButtomStacks.Length; i++)
+            {
+                if (ButtomStacks[i] == itemStack)
+                {
+                    ButtomStacks[i] = null;
+                }
+            }
+        }
+
     }
 }

@@ -10,6 +10,8 @@ namespace Evolutio
         
         public List<ItemStack> Items { get; set; }
 
+        public List<ItemStack> PickableItems { get; set; }
+
         private bool canWalk = true;
 
         public bool CanWalk()

@@ -12,18 +12,13 @@ namespace Evolutio.Client
     {
         private Texture2D bottomMenu;
         private Texture2D itemSelection;
-        private ItemStack[] _stacks;
         private int selectedSlot = 0;
         private KeyboardState oldKeybordState;
         private MouseState oldMouseState;
 
-        public Evolutio Evolutio { get; set; }
+        public Evolutio Evolutio { private get; set; }
+        private Player Player { get { return Evolutio.Player;}}
 
-        public BottomMenu()
-        {
-            _stacks = new ItemStack [10];
-        }
-        
         public void LoadContent(ContentManager Content)
         {
             bottomMenu = Content.Load<Texture2D>("botton-menu");
@@ -32,10 +27,6 @@ namespace Evolutio.Client
 
         public void Update(GameTime gameTime)
         {
-            PlaceItem(0, ItemRegistry.DETAIL.createItemStack());
-            PlaceItem(1, ItemRegistry.STONE.createItemStack());
-            PlaceItem(2, ItemRegistry.BUSH.createItemStack());
-
             for (var x = 1; x <= 10; x++)
             {
                 var ax = x;
@@ -50,7 +41,7 @@ namespace Evolutio.Client
             if (oldMouseState.ScrollWheelValue != Mouse.GetState().ScrollWheelValue)
             {
                 var diff = oldMouseState.ScrollWheelValue - Mouse.GetState().ScrollWheelValue;
-                if (diff < 0)
+                if (diff > 0)
                 {
                     SelectSlot(selectedSlot + 1);
                 }
@@ -59,9 +50,6 @@ namespace Evolutio.Client
                     SelectSlot(selectedSlot - 1);
                 }
             }
-            
-            
-            
             oldKeybordState = Keyboard.GetState();
             oldMouseState = Mouse.GetState();
         }
@@ -92,7 +80,7 @@ namespace Evolutio.Client
 
             for (var x = 0; x < 10; x++)
             {
-                var stack = _stacks[x];
+                var stack = Player.ButtomStacks[x];
                 if (stack != null)
                 {
                     var itemPosition = GetMenuPosition();
@@ -107,6 +95,12 @@ namespace Evolutio.Client
                         zoom,
                         SpriteEffects.None,
                         0f);
+
+                    if (stack.Quantity > 1)
+                    {
+                        itemPosition += new Vector2(10 * zoom, 10* zoom);
+                        spriteBatch.DrawString(Evolutio.font, string.Format("{0:D2}", stack.Quantity), itemPosition, Color.White,0f,new Vector2(0,0),0.8f,SpriteEffects.None,0f);    
+                    }
                 }
             }
 
@@ -125,6 +119,8 @@ namespace Evolutio.Client
                 zoom,
                 SpriteEffects.None,
                 0f);
+            
+            
         }
 
         public void SelectSlot(int slot)
@@ -138,15 +134,14 @@ namespace Evolutio.Client
                 selectedSlot = 9;
             }
         }
-
         public void PlaceItem(int slot, ItemStack itemStack)
         {
-            _stacks[slot] = itemStack;
+            Player.ButtomStacks[slot] = itemStack;
         }
-
+        
         public ItemStack GetSelectecItem()
         {
-            return _stacks[selectedSlot];
+            return Player.ButtomStacks[selectedSlot];
         }
     }
 }

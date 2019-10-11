@@ -82,7 +82,8 @@ namespace Evolutio
                     {
                         Ground = Evolutio.ItemRegistry.findItem(item).createItemStack(),
                         Position = position,
-                        Items = Items
+                        Items = Items,
+                        PickableItems = new List<ItemStack>()
                     });
                 }
             }
