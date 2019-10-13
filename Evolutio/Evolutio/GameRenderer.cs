@@ -10,6 +10,8 @@ namespace Evolutio
         public World World { get; set; }
         public Player Player { get; set; }
 
+        public const int SpriteSize = 32;
+
         private bool rotationState = false;
         private bool _pickableMoviment = true;
         private int _pickablePosition = 4;
@@ -39,7 +41,7 @@ namespace Evolutio
                     }
 
                     spriteBatch.Draw(tile.Ground.Item.Texture2D,
-                        new Vector2(x * 16, y * 16),
+                        new Vector2(x * SpriteSize, y * SpriteSize),
                         tile.Ground.Item.GetSourceRectangle(tile.Position),
                         color,
                         0f, tile.Ground.Item.origin,
@@ -48,6 +50,10 @@ namespace Evolutio
                         0f);
                 }
             }
+//
+//            Player.DrawPlayer(spriteBatch, gameTime);
+//            
+//            return;
             
             if (gameTime.TotalGameTime.Ticks % 10 == 0)
             {
@@ -143,7 +149,7 @@ namespace Evolutio
                     }
 
                     spriteBatch.Draw(state.Item.Texture2D,
-                        new Vector2(tile.Position.X * 16, tile.Position.Y * 16),
+                        new Vector2(tile.Position.X * SpriteSize, tile.Position.Y * SpriteSize),
                         state.Item.GetSourceRectangle(tile.Position),
                         color,
                         rotation,
@@ -156,7 +162,7 @@ namespace Evolutio
                 foreach (var pickableItem in tile.PickableItems)
                 {
                     spriteBatch.Draw(pickableItem.Item.Texture2D,
-                        new Vector2((tile.Position.X * 16) + 4, (tile.Position.Y * 16) + _pickablePosition),
+                        new Vector2((tile.Position.X * SpriteSize) + 4, (tile.Position.Y * SpriteSize) + _pickablePosition),
                         pickableItem.Item.GetSourceRectangle(tile.Position),
                         Color.White,
                         0f,

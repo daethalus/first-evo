@@ -17,7 +17,7 @@ namespace Evolutio
         public Camera(Viewport viewport)
         {
             Bounds = viewport.Bounds;
-            Zoom = 3f;
+            Zoom = 2f;
             Position = Vector3.Zero;
         }
 
@@ -50,7 +50,7 @@ namespace Evolutio
 
         public void MoveCamera(Vector3 movePosition)
         {
-            var newPosition = movePosition * 16;
+            var newPosition = movePosition * 32;
             Position = new Vector3((float) Math.Round(newPosition.X, 2),(float) Math.Round(newPosition.Y, 2),0f);
         }
 

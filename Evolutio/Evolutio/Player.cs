@@ -24,10 +24,10 @@ namespace Evolutio
             {
                 Rectangle = rectangle;
             }
-            public static Direction SOUTH = new Direction(new Rectangle(0, 0, 16, 32));
-            public static Direction EAST = new Direction(new Rectangle(0, 32, 16, 32));
-            public static Direction NORTH = new Direction(new Rectangle(0, 64, 16, 32));
-            public static Direction WEST = new Direction(new Rectangle(0, 96, 16, 32));
+            public static Direction SOUTH = new Direction(new Rectangle(0, 0, 64, 64));
+            public static Direction EAST = new Direction(new Rectangle(0, 0, 64, 64));
+            public static Direction NORTH = new Direction(new Rectangle(0, 0, 64, 64));
+            public static Direction WEST = new Direction(new Rectangle(0, 0, 64, 64));
         }
 
         public Vector3 PlayerPosition = new Vector3(0, 0, 0);
@@ -55,7 +55,8 @@ namespace Evolutio
 
         public void LoadContent(ContentManager Content)
         {
-            characterSprite = Content.Load<Texture2D>("Character");
+            //characterSprite = Content.Load<Texture2D>("Character");
+            characterSprite = Content.Load<Texture2D>("tibialike-character");
             quadrado = Content.Load<Texture2D>("quadrado");
             Log.Debug("character sprite loaded successfully");
         }
@@ -290,14 +291,14 @@ namespace Evolutio
                 (int) Math.Floor((mousePosition.Y - Evolutio.Camera.Bounds.Height * 0.5f) / Evolutio.Camera.Zoom)  + Evolutio.Camera.Position.Y
             );
 
-            mouseSelection = new Vector2((int) Math.Floor(pos.X / 16), (int) Math.Floor(pos.Y / 16));
+            mouseSelection = new Vector2((int) Math.Floor(pos.X / 32), (int) Math.Floor(pos.Y / 32));
         }
 
 
         public Vector2 GetPlayerPositionInScreen()
         {
             //return new Vector2(19 * Evolutio.SCALE * 16, 10 * Evolutio.SCALE * 16);
-            return new Vector2(oldPlayerPosition.X * 16,oldPlayerPosition.Y * 16);
+            return new Vector2(oldPlayerPosition.X * 32,oldPlayerPosition.Y * 32);
         }
 
         public void DrawPlayer(SpriteBatch spriteBatch, GameTime gameTime)
@@ -318,6 +319,8 @@ namespace Evolutio
             {
                 currentSprite = 0;
             }
+
+            currentSprite = 0;
             
             spriteBatch.Draw(
                 characterSprite,
@@ -325,7 +328,7 @@ namespace Evolutio
                 new Rectangle(currentSprite, rect.Y,rect.Width,rect.Height),
                 //new Rectangle(0, 0, 16, 32),
                 Color.White,
-                0f, new Vector2(8, 24),
+                0f, new Vector2(48, 48),
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);
@@ -334,8 +337,8 @@ namespace Evolutio
             {
                 spriteBatch.Draw(
                     Evolutio.selectionSquare,
-                    new Vector2((int) mouseSelection.X * 16, (int) mouseSelection.Y * 16),
-                    new Rectangle(0, 0, 16, 16),
+                    new Vector2((int) mouseSelection.X * 32, (int) mouseSelection.Y * 32),
+                    new Rectangle(0, 0, 32, 32),
                     Color.White,
                     0f, new Vector2(0, 0),
                     Evolutio.SCALE,

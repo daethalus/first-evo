@@ -37,40 +37,41 @@ namespace Evolutio
 
                     if (value < 0)
                     {
-                        if (random.Next(30) == 0)
-                        {
-                            item = "wave";
-                        }
-                        else
-                        {
-                            item = "water";
-                        }
+                        item = "water";
+//                        if (random.Next(30) == 0)
+//                        {
+//                            item = "wave";
+//                        }
+//                        else
+//                        {
+//                            
+//                        }
                     }
                     else
                     {
-                        int rand = random.Next(60);
-                        var added = false;
-                        if ( rand == 0)
-                        {
-                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createItemStack());
-                            added = true;
-                        }
-                        
-                        if (rand == 1)
-                        {
-                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createItemStack());
-                            added = true;
-                        }
-
-                        if (!added)
-                        {
-                            rand = random.Next(100); 
-
-                            if (rand == 2)
-                            {
-                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createItemStack());
-                            }
-                        }
+//                        int rand = random.Next(60);
+//                        var added = false;
+//                        if ( rand == 0)
+//                        {
+//                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createItemStack());
+//                            added = true;
+//                        }
+//                        
+//                        if (rand == 1)
+//                        {
+//                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createItemStack());
+//                            added = true;
+//                        }
+//
+//                        if (!added)
+//                        {
+//                            rand = random.Next(100); 
+//
+//                            if (rand == 2)
+//                            {
+//                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createItemStack());
+//                            }
+//                        }
                     }
 
                     if (x == 15 || y == 15)

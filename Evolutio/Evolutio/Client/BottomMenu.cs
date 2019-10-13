@@ -83,7 +83,7 @@ namespace Evolutio.Client
             stack.ChangeQuantity(64);
             Player.GiveItem(stack);
             
-            stack = ItemRegistry.Items["plant"].createItemStack();
+            stack = ItemRegistry.Items["draggy"].createItemStack();
             stack.ChangeQuantity(64);
             Player.GiveItem(stack);
             
@@ -136,7 +136,7 @@ namespace Evolutio.Client
                         rect,
                         Color.White,
                         0f, 
-                        stack.Item.origin,
+                        new Vector2(0,0), 
                         azoom,
                         SpriteEffects.None,
                         0f);
