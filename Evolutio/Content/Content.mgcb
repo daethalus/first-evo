@@ -56,7 +56,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
-#begin newtree.png
+#begin Inner.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -66,7 +66,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:newtree.png
+/build:Inner.png
 
 #begin Overworld.png
 /importer:TextureImporter
@@ -92,30 +92,6 @@
 /processorParam:TextureFormat=Color
 /build:quadrado.png
 
-#begin Sprite-0003.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Sprite-0003.png
-
-#begin tree.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:tree.png
-
 #begin tree-pt2-2-test.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -127,4 +103,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:tree-pt2-2-test.png
+
+#begin walls.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:walls.png
 

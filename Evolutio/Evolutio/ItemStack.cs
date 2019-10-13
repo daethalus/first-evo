@@ -34,6 +34,10 @@ namespace Evolutio
         public int ChangeQuantity(int _quantity)
         {
             Quantity += _quantity;
+            if (Quantity > 64)
+            {
+                Quantity = 64;
+            }
             return Quantity;
         }
     }

@@ -133,7 +133,14 @@ namespace Evolutio
         public void PlaceItem(Item item, Vector3 vector3)
         {
             var tile = GetTile(vector3);
-            tile.Items.Add(item.createItemStack());
+            if (item.GroundItem)
+            {
+                tile.Ground = item.createItemStack();
+            }
+            else
+            {
+                tile.Items.Add(item.createItemStack());
+            }
         }
 
         public void PlaceGround(Item item, Vector3 vector3)

@@ -18,10 +18,14 @@ namespace Evolutio
         public Int16 AnimationTime { get; set; }
         public bool CanPick { get; set; }
         
+        public bool GroundItem { get; set; }
+        
         public Item()
         {
             origin = Vector2.Zero;
             CanPick = true;
+            GroundItem = false;
+            TotalDurability = 200;
         }
 
 

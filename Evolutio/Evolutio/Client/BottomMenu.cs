@@ -50,6 +50,44 @@ namespace Evolutio.Client
                     SelectSlot(selectedSlot - 1);
                 }
             }
+            
+            var stack = ItemRegistry.CHESS_TILE.createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wood-tile"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wall"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wall2"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wall3"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wall4"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["wall5"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["door1"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            stack = ItemRegistry.Items["plant"].createItemStack();
+            stack.ChangeQuantity(64);
+            Player.GiveItem(stack);
+            
+            
             oldKeybordState = Keyboard.GetState();
             oldMouseState = Mouse.GetState();
         }
@@ -86,13 +124,20 @@ namespace Evolutio.Client
                     var itemPosition = GetMenuPosition();
                     var ax = (x * (16 * (int)zoom)) + (x * (2 * (int) zoom)) + (1 * zoom);
                     itemPosition += new Vector2(ax,3);
+
+                    var rect = stack.Item.GetSourceRectangle(new Vector3(0, 0, 0));
+
+                    var xx = rect.Height >> 4;
+
+                    var azoom = (zoom / xx);
+                    
                     spriteBatch.Draw(stack.Item.Texture2D,
                         itemPosition,
-                        stack.Item.GetSourceRectangle(new Vector3(0,0,0)),
+                        rect,
                         Color.White,
                         0f, 
                         stack.Item.origin,
-                        zoom,
+                        azoom,
                         SpriteEffects.None,
                         0f);
 

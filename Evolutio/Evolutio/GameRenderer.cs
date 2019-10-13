@@ -94,6 +94,23 @@ namespace Evolutio
                             }
                         }
                     }
+
+                    if (state.Item.Name == "wall")
+                    {
+                        var ix = tile.Position.X - PlayerPosition.X;
+                        var iy = tile.Position.Y - PlayerPosition.Y;
+
+                        if (iy == 1 && ix > -2 && ix < 2)
+                        {
+                            transparency = 0.5f;
+                            transparent = true;
+                            if (!playerIsDrawed)
+                            {
+                                Player.DrawPlayer(spriteBatch, gameTime);
+                                playerIsDrawed = true;
+                            }   
+                        }
+                    }
                     
                     var rotation = 0f;
                     
