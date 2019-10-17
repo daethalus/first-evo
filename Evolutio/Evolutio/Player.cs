@@ -11,7 +11,7 @@ namespace Evolutio
 {
     public class Player : ClientBehavior
     {
-        private Texture2D quadrado;
+        private Texture2D selectionBox;
         public World World { get; set; }
 
         public Evolutio Evolutio { get; set; }
@@ -25,9 +25,9 @@ namespace Evolutio
                 Rectangle = rectangle;
             }
             public static Direction SOUTH = new Direction(new Rectangle(0, 0, 64, 64));
-            public static Direction EAST = new Direction(new Rectangle(0, 0, 64, 64));
-            public static Direction NORTH = new Direction(new Rectangle(0, 0, 64, 64));
-            public static Direction WEST = new Direction(new Rectangle(0, 0, 64, 64));
+            public static Direction EAST = new Direction(new Rectangle(0, 192, 64, 64));
+            public static Direction NORTH = new Direction(new Rectangle(0, 64, 64, 64));
+            public static Direction WEST = new Direction(new Rectangle(0, 128, 64, 64));
         }
 
         public Vector3 PlayerPosition = new Vector3(0, 0, 0);
@@ -55,9 +55,8 @@ namespace Evolutio
 
         public void LoadContent(ContentManager Content)
         {
-            //characterSprite = Content.Load<Texture2D>("Character");
-            characterSprite = Content.Load<Texture2D>("tibialike-character");
-            quadrado = Content.Load<Texture2D>("quadrado");
+            characterSprite = Content.Load<Texture2D>("character");
+            selectionBox = Content.Load<Texture2D>("selection-box");
             Log.Debug("character sprite loaded successfully");
         }
 
@@ -306,10 +305,10 @@ namespace Evolutio
             Rectangle rect = _direction.Rectangle;
             if (isWalking)
             {
-                if (gameTime.TotalGameTime.Ticks % 6 == 0)
+                if (gameTime.TotalGameTime.Ticks % 4 == 0)
                 {
-                    currentSprite += 16;
-                    if (currentSprite > 48)
+                    currentSprite += 64;
+                    if (currentSprite > 192)
                     {
                         currentSprite = 0;
                     }   
@@ -320,15 +319,14 @@ namespace Evolutio
                 currentSprite = 0;
             }
 
-            currentSprite = 0;
-            
             spriteBatch.Draw(
                 characterSprite,
                 GetPlayerPositionInScreen(),
                 new Rectangle(currentSprite, rect.Y,rect.Width,rect.Height),
                 //new Rectangle(0, 0, 16, 32),
                 Color.White,
-                0f, new Vector2(48, 48),
+                0f, 
+                new Vector2(48, 48),
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);
@@ -336,7 +334,7 @@ namespace Evolutio
             if (mouseSelection != null)
             {
                 spriteBatch.Draw(
-                    Evolutio.selectionSquare,
+                    selectionBox,
                     new Vector2((int) mouseSelection.X * 32, (int) mouseSelection.Y * 32),
                     new Rectangle(0, 0, 32, 32),
                     Color.White,

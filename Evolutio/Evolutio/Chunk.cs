@@ -16,10 +16,10 @@ namespace Evolutio
         public void GenerateChunk(PlaneNoiseMapBuilder mapBuilder, Random random)
         {
             mapBuilder.SetBounds(
-                ChunkPosition.X * 16, 
-                ChunkPosition.X * 16 + 16, 
-                ChunkPosition.Y * 16, 
-                ChunkPosition.Y * 16 + 16);
+                ChunkPosition.X * (double) 16, 
+                ChunkPosition.X * (double) 16 + (double) 16, 
+                ChunkPosition.Y * (double) 16, 
+                ChunkPosition.Y * (double) 16 + (double) 16);
             
             
             mapBuilder.Build();

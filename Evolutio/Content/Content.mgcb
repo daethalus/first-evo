@@ -37,7 +37,7 @@
 /processorParam:TextureFormat=Color
 /build:../../../../../Users/paulo/Desktop/mypixelarts/item-selection.png;item-selection.png
 
-#begin Character.png
+#begin character.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -47,7 +47,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Character.png
+/build:character.png
 
 #begin draggy.bmp
 /importer:TextureImporter
@@ -67,6 +67,30 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
+
+#begin grass1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:grass1.png
+
+#begin grass3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:grass3.png
 
 #begin Inner.png
 /importer:TextureImporter
@@ -104,6 +128,18 @@
 /processorParam:TextureFormat=Color
 /build:quadrado.png
 
+#begin selection-box.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:selection-box.png
+
 #begin sprite-test.bmp
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -139,18 +175,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:test-texture2.png
-
-#begin tibialike-character.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:tibialike-character.png
 
 #begin tree-pt2-2-test.png
 /importer:TextureImporter

@@ -43,7 +43,6 @@ namespace Evolutio
                 Frequency = Frequency,
                 //Persistence = Persistence
             };
-
             _scaleBias = new ScaleBias
             {
                 Source0 = _perlin,

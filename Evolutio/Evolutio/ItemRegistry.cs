@@ -22,12 +22,13 @@ namespace Evolutio
             var testTexture = Content.Load<Texture2D>("test-texture");
             var testTexture2 = Content.Load<Texture2D>("test-texture2");
             var inner = Content.Load<Texture2D>("Inner");
-            var wall = Content.Load<Texture2D>("walls");
+            var grass3 = Content.Load<Texture2D>("grass3");
             var spriteTest = Content.Load<Texture2D>("sprite-test");
             var draggy = Content.Load<Texture2D>("draggy");
+            var grass = Content.Load<Texture2D>("grass1");
             
             Items = new Dictionary<string, Item>();
-            var ground = new Item {Texture2D = testTexture, Name = "ground", CanWalk = true, GroundItem = true};
+            var ground = new Item {Texture2D = grass, Name = "ground", CanWalk = true, GroundItem = true};
             ground.addSourceRectangle(new Rectangle(0, 0, 32, 32));
             GROUND = addItem(ground);
             
@@ -59,11 +60,11 @@ namespace Evolutio
             
             
             
-            addItem(new Item {Texture2D = wall, Name = "wall2", SourceRectangle = new Rectangle(0,16,16,16),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = wall, Name = "wall3", SourceRectangle = new Rectangle(128,48,16,16),GroundItem = false, CanWalk = true});
-            addItem(new Item {Texture2D = wall, Name = "wall4", SourceRectangle = new Rectangle(32,0,16,16),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = wall, Name = "wall5", SourceRectangle = new Rectangle(32,16,16,16),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = wall, Name = "door1", SourceRectangle = new Rectangle(246,16,16,16),GroundItem = false, CanWalk = true});
+            addItem(new Item {Texture2D = grass3, Name = "wall2", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
+            addItem(new Item {Texture2D = grass3, Name = "wall3", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = true});
+            addItem(new Item {Texture2D = grass3, Name = "wall4", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
+            addItem(new Item {Texture2D = grass3, Name = "wall5", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
+            addItem(new Item {Texture2D = grass3, Name = "door1", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = true});
             
             
             addItem(new Item {Texture2D = draggy, Name = "draggy", SourceRectangle = new Rectangle(256,320,64,64),GroundItem = false, CanWalk = false});
