@@ -326,7 +326,7 @@ namespace Evolutio
                 //new Rectangle(0, 0, 16, 32),
                 Color.White,
                 0f, 
-                new Vector2(48, 48),
+                new Vector2(61, 61),
                 Evolutio.SCALE,
                 SpriteEffects.None,
                 0f);

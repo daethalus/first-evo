@@ -32,12 +32,12 @@ namespace Evolutio
                     double value = mapBuilder.DestNoiseMap.GetValue(x, y);
                     var position = new Vector3(ChunkPosition.X * 16 + x, ChunkPosition.Y * 16 + y, 0);
 
-                    var item = "ground";
+                    var item = ItemRegistry.GROUND;
                     List<ItemStack> Items = new List<ItemStack>();
 
                     if (value < 0)
                     {
-                        item = "water";
+                        item = ItemRegistry.WATER;
 //                        if (random.Next(30) == 0)
 //                        {
 //                            item = "wave";
@@ -49,29 +49,29 @@ namespace Evolutio
                     }
                     else
                     {
-//                        int rand = random.Next(60);
-//                        var added = false;
-//                        if ( rand == 0)
-//                        {
-//                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createItemStack());
-//                            added = true;
-//                        }
-//                        
-//                        if (rand == 1)
-//                        {
-//                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createItemStack());
-//                            added = true;
-//                        }
-//
-//                        if (!added)
-//                        {
-//                            rand = random.Next(100); 
-//
-//                            if (rand == 2)
-//                            {
-//                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createItemStack());
-//                            }
-//                        }
+                        int rand = random.Next(60);
+                        var added = false;
+                        if ( rand == 0)
+                        {
+                            Items.Add(Evolutio.ItemRegistry.findItem("bush").createItemStack());
+                            added = true;
+                        }
+                        
+                        if (rand == 1)
+                        {
+                            Items.Add(Evolutio.ItemRegistry.findItem("stone").createItemStack());
+                            added = true;
+                        }
+
+                        if (!added)
+                        {
+                            rand = random.Next(100); 
+
+                            if (rand == 2)
+                            {
+                                Items.Add(Evolutio.ItemRegistry.findItem("tree").createItemStack());
+                            }
+                        }
                     }
 
                     if (x == 15 || y == 15)
@@ -81,7 +81,7 @@ namespace Evolutio
 
                     AddTile(new Tile
                     {
-                        Ground = Evolutio.ItemRegistry.findItem(item).createItemStack(),
+                        Ground = item.createItemStack(),
                         Position = position,
                         Items = Items,
                         PickableItems = new List<ItemStack>()

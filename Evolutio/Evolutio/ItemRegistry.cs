@@ -7,69 +7,41 @@ namespace Evolutio
 {
     public class ItemRegistry
     {
-        public static Item STONE;
+
         public static Item GROUND;
-        public static Item DETAIL;
         public static Item BUSH;
-        public static Item CHESS_TILE;
-        
-        
-        public static Dictionary<string, Item> Items {get; set; } // this need to be private
+        public static Item WATER;
+        public static Item STONE;
+
+        public static Item TREE;
+
+
+        public Dictionary<string, Item> Items {get; set; } // this need to be private
+
+        public ItemRegistry()
+        {
+            Items = new Dictionary<string, Item>();
+        }
 
         public void LoadContent(ContentManager Content)
         {
-            var overworld = Content.Load<Texture2D>("Overworld");
-            var testTexture = Content.Load<Texture2D>("test-texture");
-            var testTexture2 = Content.Load<Texture2D>("test-texture2");
-            var inner = Content.Load<Texture2D>("Inner");
-            var grass3 = Content.Load<Texture2D>("grass3");
-            var spriteTest = Content.Load<Texture2D>("sprite-test");
-            var draggy = Content.Load<Texture2D>("draggy");
-            var grass = Content.Load<Texture2D>("grass1");
+            var world = Content.Load<Texture2D>("world");
+            var tree = Content.Load<Texture2D>("tree");
             
-            Items = new Dictionary<string, Item>();
-            var ground = new Item {Texture2D = grass, Name = "ground", CanWalk = true, GroundItem = true};
-            ground.addSourceRectangle(new Rectangle(0, 0, 32, 32));
-            GROUND = addItem(ground);
+            GROUND = new Item {Texture2D = world, Name = "ground", CanWalk = true, GroundItem = true, SourceRectangle = new Rectangle(0, 32, 32, 32)};
+            addItem(GROUND);
             
+            WATER = new Item {Texture2D = world, Name = "water", CanWalk = false, GroundItem = true, SourceRectangle = new Rectangle(0, 96, 32, 32)};
+            addItem(WATER);
+          
+            BUSH = new Item {Texture2D = world, Name = "bush", CanWalk = false, GroundItem = false,  SourceRectangle = new Rectangle(0,0,32,32)};
+            addItem(BUSH);
             
-            addItem(new Item {Texture2D = testTexture, Name = "water",SourceRectangle = new Rectangle(32,0,32, 32), CanWalk = false});
+            STONE = new Item {Texture2D = world, Name = "stone", CanWalk = false, GroundItem = false,  SourceRectangle = new Rectangle(0,64,32,32)};
+            addItem(STONE);
             
-            var wave = new Item {Texture2D = overworld, Name = "wave", CanWalk = false, AnimationTime = 300};
-            
-            wave.addSourceRectangle(new Rectangle(0, 16, 16, 16));
-            wave.addSourceRectangle(new Rectangle(16, 16, 16, 16));
-            wave.addSourceRectangle(new Rectangle(32, 16, 16, 16));
-            wave.addSourceRectangle(new Rectangle(48, 16, 16, 16));
-            
-            addItem(wave);
-            
-            DETAIL = addItem(new Item {Texture2D = overworld, Name = "other",SourceRectangle = new Rectangle(16,0,16,16), CanWalk = true, TotalDurability = 50});
-            BUSH = addItem(new Item {Texture2D = overworld, Name = "bush",SourceRectangle = new Rectangle(32,224,16,16), CanWalk = false, TotalDurability = 200});
-            STONE = addItem(new Item {Texture2D = overworld, Name = "stone",SourceRectangle = new Rectangle(112,80,16,16), CanWalk = false, TotalDurability = 300});
-            
-            addItem(new Item {Texture2D = Content.Load<Texture2D>("tree-pt2-2-test"), Name = "tree",SourceRectangle = new Rectangle(0,0,80,96), CanWalk = false, origin = new Vector2(34,80),TotalDurability = 500, CanPick = false});
-
-
-            CHESS_TILE = new Item {Texture2D = inner, Name = "chess-tile", SourceRectangle = new Rectangle(0,0,16,16),GroundItem = true, CanWalk = true};
-            addItem(CHESS_TILE);
-            
-            addItem(new Item {Texture2D = inner, Name = "wood-tile", SourceRectangle = new Rectangle(0,16,16,16),GroundItem = true, CanWalk = true});            
-            
-            addItem(new Item {Texture2D = spriteTest, Name = "wall", SourceRectangle = new Rectangle(0,0,64,64),GroundItem = false, CanWalk = false, origin = new Vector2(32, 32)});
-            
-            
-            
-            addItem(new Item {Texture2D = grass3, Name = "wall2", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = grass3, Name = "wall3", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = true});
-            addItem(new Item {Texture2D = grass3, Name = "wall4", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = grass3, Name = "wall5", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = false});
-            addItem(new Item {Texture2D = grass3, Name = "door1", SourceRectangle = new Rectangle(0,0,32,32),GroundItem = false, CanWalk = true});
-            
-            
-            addItem(new Item {Texture2D = draggy, Name = "draggy", SourceRectangle = new Rectangle(256,320,64,64),GroundItem = false, CanWalk = false});
-            
-            addItem(new Item {Texture2D = inner, Name = "plant", SourceRectangle = new Rectangle(128,194,16,32),GroundItem = false, CanWalk = false, origin = new Vector2(0, 16)});
+            TREE = new Item {Texture2D = tree, Name = "tree", CanWalk = false, GroundItem = false,  SourceRectangle = new Rectangle(0,0,128,128), origin = new Vector2(90,84)};
+            addItem(TREE);
         }
         
         public Item addItem(Item item)

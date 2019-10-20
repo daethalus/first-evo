@@ -50,44 +50,6 @@ namespace Evolutio.Client
                     SelectSlot(selectedSlot - 1);
                 }
             }
-            
-            var stack = ItemRegistry.CHESS_TILE.createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wood-tile"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wall"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wall2"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wall3"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wall4"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["wall5"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["door1"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            stack = ItemRegistry.Items["draggy"].createItemStack();
-            stack.ChangeQuantity(64);
-            Player.GiveItem(stack);
-            
-            
             oldKeybordState = Keyboard.GetState();
             oldMouseState = Mouse.GetState();
         }

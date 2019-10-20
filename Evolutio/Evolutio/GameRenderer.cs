@@ -67,12 +67,12 @@ namespace Evolutio
                     _pickablePosition--;
                 }
 
-                if (_pickablePosition >= 4)
+                if (_pickablePosition >= 8)
                 {
                     _pickableMoviment = false;
                 }
 
-                if (_pickablePosition <= 2)
+                if (_pickablePosition <= 4)
                 {
                     _pickableMoviment = true;
                 }
@@ -162,7 +162,7 @@ namespace Evolutio
                 foreach (var pickableItem in tile.PickableItems)
                 {
                     spriteBatch.Draw(pickableItem.Item.Texture2D,
-                        new Vector2((tile.Position.X * SpriteSize) + 4, (tile.Position.Y * SpriteSize) + _pickablePosition),
+                        new Vector2((tile.Position.X * SpriteSize) + 8, (tile.Position.Y * SpriteSize) + _pickablePosition),
                         pickableItem.Item.GetSourceRectangle(tile.Position),
                         Color.White,
                         0f,

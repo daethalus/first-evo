@@ -66,9 +66,7 @@ namespace Evolutio
             Log.Debug("LoadContent");
             
             font = Content.Load<SpriteFont>("Font");
-            selectionSquare = Content.Load<Texture2D>("quadrado");
-            
-            
+
             foreach (var behavior in behaviors)
             {
                 behavior.LoadContent(Content);
